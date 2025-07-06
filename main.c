@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "matiere.h"
-
+#include "etre_note.h"
 int main()
 {
     int optionMenuPrincipal;
@@ -84,30 +84,53 @@ int main()
                 }
                
             break;
-        case 4: printf("Gestion des notes");
-                switch(OptionSousMenuNote)
-                {
-                    case 1:
-                        
-                        break;
-                    case 2:
-                        
-                        break;
-                    case 3:
-                        
-                        break;
-                    case 4:
-                        
-                        break;
-                    case 5:
-                        
-                        break;
-                    
-                    default:
-                        break;   
-                }   
-                
+        case 4: 
+    printf("Gestion des notes\n");
+    printf("1. Ajout des notes d’un étudiant dans une matière\n");
+    printf("2. Ajout des notes d’un étudiant dans toutes ses matières\n");
+    printf("3. Ajout des notes d’une classe dans une matière\n");
+    printf("4. \n");
+    printf("5. \n");
+    printf("6. Afficher les notes de l’étudiant dans une matière donnée\n");
+    printf("7. Afficher les notes de l’étudiant dans toutes ses matières (les matières de sa classe)\n");
+    printf("8.Afficher les notes d’une classe dans une matière donnée\n");
+    printf("9. Retour\n");
+    printf("Veuillez choisir votre option : ");
+    scanf("%d", &OptionSousMenuNote);
+    
+    switch(OptionSousMenuNote)
+    {
+        case 1: 
+            ajouter_etre_note_etudiant_matiere();
             break;
+        case 2: 
+            ajouter_etre_note_etudiant_toutes_matieres();
+            break;
+        case 3: 
+            ajouter_etre_note_classe_matiere();
+            break;
+        case 4: 
+            modifier_etre_note();
+            break;
+        case 5: 
+            supprimer_etre_note();
+            break;
+        case 6: 
+            afficher_etre_note_etudiant_matiere();
+            break;
+        case 7: 
+            afficher_etre_note_etudiant_toutes_matieres();
+            break;
+        case 8: 
+            afficher_etre_note_classe_matiere();
+            break;
+        case 9:
+            break;
+        default: 
+            printf("Option invalide!\n");
+    }
+    break;
+
         case 5: printf("Bye");
                 return 0;
         default: printf("Veuillez choisir parmi les options");
