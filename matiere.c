@@ -2,38 +2,52 @@
 #include <stdlib.h>
 #include "matiere.h"
 
-void ajout_matiere()
+void ajouter_matiere()
 {
-   FILE *matiere = fopen("matiere.csv","w");
-   signed char texte[256] = {0};
+    matiere matiere_ajouter;
+
+    printf("Donner une reference de la matiere : ");
+    scanf("%d", &matiere_ajouter.reference);
+    printf("\nDonner le libelle de la matiere : ");
+    scanf("%s", &matiere_ajouter.libelle);
+    printf("\nDonner le coefficient de la matiere :");
+    scanf("%d", &matiere_ajouter.coefficient);
+   
+    FILE *matiere = fopen("matiere.csv","a");
 
     if(matiere == NULL)
         exit(1);
+    
+    fprintf(matiere, "|---------------------------------------|\n");
+    fprintf(matiere, "| %9d | %11s | %11d |\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+    fprintf(matiere, "|---------------------------------------|\n");
 
-    fputs(texte, matiere);
-
-   fclose(matiere);
+    fclose(matiere);
+    printf("Ajout reussi\n");
 }
-void modification_matiere();
-void recherche_matiere();
+
+void modifier_matiere()
+{
+
+}
+
+void rechercher_matiere();
+
 void supprimer_matiere();
 
-void affichage_matiere()
+void afficher_matiere()
 {
     FILE *matiere = fopen("matiere.csv","r");
-    //int caractere = 0;
+
     signed char texte[256];
 
     if(matiere == NULL)
         exit(1);
 
     while(fgets(texte, 255, matiere) != NULL)
+    {
         printf("%s", texte);
-    // while(caractere != EOF)
-    // {
-    //     caractere = fgetc(matiere);
-    //     printf("%c", caractere);
-    // }
+    }
     
     fclose(matiere);
 }
