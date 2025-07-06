@@ -7,9 +7,9 @@ typedef struct
 }matiere;
 
 
-void ajout_matiere();
-void modification_matiere();
-void recherche_matiere();
+void ajouter_matiere();
+void modifier_matiere();
+void rechercher_matiere();
 void supprimer_matiere();
-void affichage_matiere();
+void afficher_matiere();
 
