@@ -8,37 +8,6 @@
 #define NOTE_MIN 0.0f
 #define NOTE_MAX 20.0f
 
-void menu_etre_note() {
-    int choix;
-    do {
-        printf("\n=== GESTION DES RELATIONS ETRE_NOTE ===\n");
-        printf("1. Ajouter relation etudiant-matiere\n");
-        printf("2. Ajouter relations pour toutes les matieres d'un etudiant\n");
-        printf("3. Ajouter relations pour une classe dans une matiere\n");
-        printf("4. Modifier une relation\n");
-        printf("5. Supprimer une relation\n");
-        printf("6. Afficher relations etudiant-matiere\n");
-        printf("7. Afficher toutes les relations d'un etudiant\n");
-        printf("8. Afficher relations classe-matiere\n");
-        printf("9. Retour au menu principal\n");
-        printf("Choix : ");
-        scanf("%d", &choix);
-        
-        switch(choix) {
-            case 1: ajouter_etre_note_etudiant_matiere(); break;
-            case 2: ajouter_etre_note_etudiant_toutes_matieres(); break;
-            case 3: ajouter_etre_note_classe_matiere(); break;
-            case 4: modifier_etre_note(); break;
-            case 5: supprimer_etre_note(); break;
-            case 6: afficher_etre_note_etudiant_matiere(); break;
-            case 7: afficher_etre_note_etudiant_toutes_matieres(); break;
-            case 8: afficher_etre_note_classe_matiere(); break;
-            case 9: return;
-            default: printf("Choix invalide!\n");
-        }
-    } while(1);
-}
-
 int valider_note(float note) {
     return note >= NOTE_MIN && note <= NOTE_MAX;
 }
