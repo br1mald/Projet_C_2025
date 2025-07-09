@@ -1,4 +1,3 @@
-
 #ifndef ETRE_NOTE_H
 #define ETRE_NOTE_H
 
@@ -6,11 +5,10 @@
 #include "matiere.h"
 #include "classe.h"
 
-// Structure représentant la relation "être noté" avec :
-// - numero_etudiant : identifiant de l'étudiant (clé étrangère)
-// - reference_matiere : code de la matière (clé étrangère)
-// - noteCC : note de contrôle continu (entre 0 et 20)
-// - noteDS : note de devoir surveillé (entre 0 et 20)
+#define FICHIER_NOTES "notes.csv"
+#define NOTE_MIN 0.0f
+#define NOTE_MAX 20.0f
+
 typedef struct {
     int numero_etudiant;
     char reference_matiere[15];
@@ -18,15 +16,20 @@ typedef struct {
     float noteDS;
 } Etre_note;
 
-// Fonctions pour la gestion de la relation "être noté"
-void menu_etre_note();  // Affiche le menu de gestion
-void ajouter_etre_note_etudiant_matiere();  // Ajoute une relation pour un étudiant dans une matière
-void ajouter_etre_note_etudiant_toutes_matieres();  // Ajoute les relations pour toutes les matières d'un étudiant
-void ajouter_etre_note_classe_matiere();  // Ajoute les relations pour une matière dans toute une classe
-void modifier_etre_note();  // Modifie une relation existante
-void supprimer_etre_note();  // Supprime une relation
-void afficher_etre_note_etudiant_matiere();  // Affiche les relations d'un étudiant dans une matière
-void afficher_etre_note_etudiant_toutes_matieres();  // Affiche toutes les relations d'un étudiant
-void afficher_etre_note_classe_matiere();  // Affiche les relations d'une classe dans une matière
+// Fonctions utilitaires
+int valider_note(float note);
+float saisir_note_valide(const char* message);
+float calculer_moyenne(float noteCC, float noteDS);
+int matiere_associee_classe(const char* ref_matiere, int code_classe);
+
+// Fonctions principales
+void ajouter_note_etudiant_matiere();
+void ajouter_note_etudiant_toutes_matieres();
+void ajouter_note_classe_matiere();
+void modifier_note();
+void supprimer_note();
+void afficher_note_etudiant_matiere();
+void afficher_note_classe_matiere();
+void afficher_note_etudiant_toutes_matieres();
 
 #endif
