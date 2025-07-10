@@ -13,10 +13,15 @@ void ajouter_matiere()
     printf("\nDonner le coefficient de la matiere :");
     scanf("%d", &matiere_ajouter.coefficient);
    
-    FILE *matiere = fopen("matiere.csv","a");
+    FILE *matiere; 
+    fopen("matiere.csv","a");
 
     if(matiere == NULL)
+    { 
+        printf("Erreur d'ouverture du fichier matiere");
         exit(1);
+    }
+
     
     fprintf(matiere, "|---------------------------------------|\n");
     fprintf(matiere, "| %9d | %11s | %11d |\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
@@ -28,7 +33,29 @@ void ajouter_matiere()
 
 void modifier_matiere()
 {
+    int numeroEnreg, codeRetour;
+    FILE *matiere = fopen("matiere.csv","r+");
+    
+    if(matiere == NULL)
+    { 
+        printf("Erreur d'ouverture du fichier matiere");
+        exit(1);
+    }
 
+    printf("Saisir le numero de l'enregistrement à modifier : ");
+    scanf("%d", &numeroEnreg);
+
+    codeRetour = fseek(matiere, numeroEnreg * sizeof(matiere), SEEK_SET);
+
+    if(codeRetour != 0)
+        printf("Enregistrement echoue!");
+    else
+    {
+        
+    }
+
+
+    fclose(matiere);
 }
 
 void rechercher_matiere();
