@@ -89,8 +89,8 @@ int main()
     printf("1. Ajout des notes d’un étudiant dans une matière\n");
     printf("2. Ajout des notes d’un étudiant dans toutes ses matières\n");
     printf("3. Ajout des notes d’une classe dans une matière\n");
-    printf("4. modifier des notes\n");
-    printf("5. supprimer des notes\n");
+    printf("4. Modifier des notes\n");
+    printf("5. Supprimer des notes\n");
     printf("6. Afficher les notes de l’étudiant dans une matière donnée\n");
     printf("7. Afficher les notes de l’étudiant dans toutes ses matières (les matières de sa classe)\n");
     printf("8.Afficher les notes d’une classe dans une matière donnée\n");
