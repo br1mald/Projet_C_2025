@@ -6,35 +6,42 @@ int main(){
 
     int size = 0;
     Classe classes[50];
-    int choice, nombre;
-    char continuer[5] = "oui";
+    int choice, nombre, target, pos;
+    char continuer[5] = "oui", level[10];
 
     FILE *writer = fopen("classes.csv", "w");
 
     while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
-        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Retourner au menu précédent\n");
+        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Retourner au menu précédent\n");
         scanf("%d", &choice);
         switch (choice){
             case 1:
+                printf("Menu d'ajout de classes\n");
                 printf("Veuillez saisir le nombre d'éléments à ajouter: \n");
                 scanf("%d", &nombre);
                 for (int i = 0; i < nombre; i++){
-                    printf("Ajout de la classe numéro %d\n", i + 1);
-                    add_class(classes, &size, 50);
-                    if (size >= 50) {
-                        printf("Impossible d'ajouter, le nombre de classe a atteint le maximum\n");
+                    if ((size + nombre) > 50) {
+                        printf("Impossible d'ajouter, le nombre de classes a atteint le maximum\n");
                         break;
                     }
+                    printf("Ajout de la classe numéro %d\n", i + 1);
+                    add_class(classes, &size, 50);
                     write_to_file(classes, &size);
                 }
                 break;
             case 2:
+                printf("Menu de suppression de classes\n");
                 printf("Combien de classes souhaitez-vous supprimer?\n");
                 scanf("%d", &nombre);
+                // if ((size - nombre) < 0) {
+                //     printf("Le nombre de classes enregistrées est inférieur à ce nombre.\n");
+                //     break;
+                // }
                 for (int i = 0; i < nombre; i++) remove_class(classes, &size);
                 actualize(classes, &size);
                 break;
             case 3:
+                printf("Menu de modification de classes\n");
                 printf("Combien de classes souhaitez-vous modifier?\n");
                 scanf("%d", &nombre);
                 for (int i = 0; i < nombre; i++) modify_class(classes, &size);
@@ -52,7 +59,17 @@ int main(){
                 } else printf("Aucune classe à afficher\n");
                 break;
             case 5:
-                printf("Retour au menu précédent"); //Ajouter plus tard
+                printf("Menu d'information sur une classe\n");
+                printf("Veuillez saisir le code de la classe dont vous souhaitez connaître les informations\n");
+                scanf("%d", &target);
+                pos = search(classes, target, size);
+                if (classes[pos].niveau == Licence) strcpy(level, "Licence");
+                else if (classes[pos].niveau == Master) strcpy(level, "Master");
+                printf("Nom de la classe: %s, Code: %d, Niveau: %s\n", classes[pos].nom, classes[pos].code, level);
+                break;
+            case 6:
+                printf("Retour au menu précédent\n"); //Ajouter plus tard
+                break;
             default:
                 printf("Veuillez entrer le numéro de l'opération à réaliser\n");
         }
@@ -102,10 +119,10 @@ void remove_class(Classe classes[], int *size){
         pos = search(classes, target, *size);
         if (pos == -1) printf("Classe introuvable\n");
         else {
+            printf("Classe %s supprimée.\n", classes[pos].nom);
             for (int i = pos; i < *size - 1; i++) classes[i] = classes[i + 1];
             (*size)--;
         }
-        printf("Classe %s supprimée.\n", classes[pos].nom);
     }
 }
 
