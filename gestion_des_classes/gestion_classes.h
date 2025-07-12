@@ -5,7 +5,7 @@ typedef enum {
 
 typedef struct Classe {
     int code;
-    char nom[26];
+    char nom[30];
     Niveau niveau;
 } Classe;
 
