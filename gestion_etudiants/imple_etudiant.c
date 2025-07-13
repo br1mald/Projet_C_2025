@@ -5,9 +5,9 @@
 int sous_menu_etudiant(){
     int optionSousMenuEtudiant;
     do{
-        sous_menu_etudiant : printf("Gestion des Etudiants\n");
-        printf(" 1. Ajout Etudiant \n 2. Modification Etudiant \n 3. Recherche Etudiant \n 4. Affichage des Etudiants \n 5. Suppression Etudiant\n 6. Retour au menu principal\n");
-        printf("Veuillez choisir votre option du Sous Menu Etudiant : ");
+        printf("\nGestion des Etudiants\n");
+        printf("\t 1. Ajout Etudiant \n \t 2. Modification Etudiant \n \t 3. Recherche Etudiant \n \t 4. Affichage des Etudiants \n \t 5. Suppression Etudiant\n \t 6. Retour au menu principal\n");
+        printf("\nVeuillez choisir votre option du Sous Menu Etudiant : ");
         scanf("%d", &optionSousMenuEtudiant);
         printf("\n");
         switch (optionSousMenuEtudiant)
@@ -27,11 +27,9 @@ int sous_menu_etudiant(){
             case 5: printf("Supprimer un etudiant\n");
                     suppr_etudiant();
                 break;
-            case 6: printf("Retour au menu principal\n");
-                    return 1; // Retourne au menu principal
+            // case 6: printf("Retour au menu principal\n");
+            //         return 1; // Retourne au menu principal
             default: printf("Veuillez choisir parmi les options du sous menu Etudiant\n");
-                        goto sous_menu_etudiant;
-                break;
         }
     } while(optionSousMenuEtudiant != 6);
     return 0;
@@ -61,7 +59,7 @@ int ajou_etudiant() {
     scanf("%d", &etu.date_naissance.jour);
     printf("Mois de Naissance : ");
     scanf("%d", &etu.date_naissance.mois);
-    printf("Ann‚e de Naissance : ");
+    printf("Annee de Naissance : ");
     scanf("%d", &etu.date_naissance.annee);
 
     printf("Email : ");
@@ -72,7 +70,7 @@ int ajou_etudiant() {
 
 
     if (fprintf(fichier, "%s, %s, %d, %d/%d/%d, %s, %d\n", etu.prenom, etu.nom, etu.numero, etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee, etu.email, etu.code) < 0) {
-        printf("Erreur lors de l'‚criture dans le fichier.\n");
+        printf("Erreur lors de l'ecriture dans le fichier.\n");
         fclose(fichier);
         return -1;
     }
@@ -86,7 +84,7 @@ int ajou_etudiant() {
 
 int modif_etudiant(){
      int numero, trouve = 0;
-    printf("Entrez le numero de l'etudiant … modifier : ");
+    printf("Entrez le numero de l'etudiant a modifier : ");
     scanf("%d", &numero);
 
     FILE *fichier = fopen("file_etudiant.csv", "r");
@@ -112,7 +110,7 @@ int modif_etudiant(){
                    etu.email, &etu.code) == 8) {
             if (etu.numero == numero) {
                 trouve = 1;
-                printf("Modification de l'‚tudiant %s %s\n", etu.prenom, etu.nom);
+                printf("Modification de l'etudiant %s %s\n", etu.prenom, etu.nom);
                 printf("Nouveau prenom : ");
                 scanf("%s", etu.prenom);
                 printf("Nouveau nom : ");
@@ -121,7 +119,7 @@ int modif_etudiant(){
                 scanf("%d", &etu.date_naissance.jour);
                 printf("Nouveau mois de naissance : ");
                 scanf("%d", &etu.date_naissance.mois);
-                printf("Nouvelle ann‚e de naissance : ");
+                printf("Nouvelle annee de naissance : ");
                 scanf("%d", &etu.date_naissance.annee);
                 printf("Nouvel email : ");
                 scanf("%s", etu.email);
@@ -142,10 +140,10 @@ int modif_etudiant(){
     rename("temp.csv", "file_etudiant.csv");
 
     if (trouve == 1) {
-        printf("Modification effectu‚e avec succŠs !\n");
+        printf("Modification effectuee avec succes !\n");
         return 0;
     } else {
-        printf("Aucun ‚tudiant trouv‚ avec ce num‚ro.\n");
+        printf("Aucun etudiant trouve avec ce numero.\n");
         return -1;
     }
 
@@ -165,7 +163,7 @@ int suppr_etudiant(){
         return -1;
     }
     int numero, trouve = 0;
-    printf("Entrez le numero de l'etudiant … supprimer : ");
+    printf("Entrez le numero de l'etudiant e supprimer : ");
     scanf("%d", &numero);
     Etudiant etu;
     char ligne[256];
@@ -177,8 +175,8 @@ int suppr_etudiant(){
                    etu.email, &etu.code) == 8) {
             if (etu.numero == numero) {
                 trouve = 1;
-                printf("Suppression de l'‚tudiant %s %s\n", etu.prenom, etu.nom);
-                continue; // Ne pas ‚crire cette ligne dans le fichier temporaire
+                printf("Suppression de l'etudiant %s %s\n", etu.prenom, etu.nom);
+                continue; // Ne pas ecrire cette ligne dans le fichier temporaire
             }
             fprintf(temp, "%s, %s, %d, %d/%d/%d, %s, %d\n",etu.prenom, etu.nom, etu.numero,
             etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee,etu.email, etu.code);         
@@ -189,10 +187,10 @@ int suppr_etudiant(){
     remove("file_etudiant.csv");
     rename("temp.csv", "file_etudiant.csv");
     if (trouve == 1) {
-        printf("Etudiant supprim‚ avec succŠs !\n");
+        printf("Etudiant supprime avec succes !\n");
         return 0;
     } else {
-        printf("Aucun ‚tudiant trouv‚ avec le num‚ro %d.\n", numero);
+        printf("Aucun etudiant trouve avec le numero %d.\n", numero);
         return -1;
     }
 }
@@ -206,7 +204,7 @@ int recherche_etudiant(){
         return -1;
     }
     int numero;
-    printf("Entrez le numero de l'etudiant … rechercher : ");
+    printf("Entrez le numero de l'etudiant a rechercher : ");
     scanf("%d", &numero);
     
     Etudiant etu;
@@ -234,11 +232,11 @@ int recherche_etudiant(){
     }
     
     if (trouve == 0) {
-        printf("Aucun ‚tudiant trouv‚ avec le num‚ro %d.\n", numero);
+        printf("Aucun etudiant trouve avec le numero %d.\n", numero);
     }
     
     fclose(fichier);
-    printf("Recherche termin‚e.\n");
+    printf("Recherche terminee.\n");
     return 0;
 }
 

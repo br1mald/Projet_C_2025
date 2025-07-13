@@ -1,12 +1,67 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "etre_note.h"
-
+#include "../gestion_matiere/matiere.h"
+#include "../gestion_etudiants/Etudiant.h"
+#include "../gestion_matiere/matiere.h"
+#include "../gestion_des_classes/gestion_classes.h"
 #define FICHIER_ETRE_NOTE "etre_note.csv"
 #define NOTE_MIN 0.0f
 #define NOTE_MAX 20.0f
+
+void sous_menu_note()
+{
+    // int OptionSousMenuNote;
+
+    // do{ 
+    // printf("Gestion des notes\n");
+    // printf("1. Ajout des notes d’un étudiant dans une matière\n");
+    // printf("2. Ajout des notes d’un étudiant dans toutes ses matières\n");
+    // printf("3. Ajout des notes d’une classe dans une matière\n");
+    // printf("4. modifier des notes\n");
+    // printf("5. supprimer des notes\n");
+    // printf("6. Afficher les notes de l’étudiant dans une matière donnée\n");
+    // printf("7. Afficher les notes de l’étudiant dans toutes ses matières (les matières de sa classe)\n");
+    // printf("8.Afficher les notes d’une classe dans une matière donnée\n");
+    // printf("9. Retour\n");
+    // printf("Veuillez choisir votre option : ");
+    // scanf("%d", &OptionSousMenuNote);
+
+    // switch(OptionSousMenuNote)
+    // {
+    //     case 1: 
+    //         ajouter_etre_note_etudiant_matiere();
+    //         break;
+    //     case 2: 
+    //         ajouter_etre_note_etudiant_toutes_matieres();
+    //         break;
+    //     case 3: 
+    //         ajouter_etre_note_classe_matiere();
+    //         break;
+    //     case 4: 
+    //         modifier_etre_note();
+    //         break;
+    //     case 5: 
+    //         supprimer_etre_note();
+    //         break;
+    //     case 6: 
+    //         afficher_etre_note_etudiant_matiere();
+    //         break;
+    //     case 7: 
+    //         afficher_etre_note_etudiant_toutes_matieres();
+    //         break;
+    //     case 8: 
+    //         afficher_etre_note_classe_matiere();
+    //         break;
+    //     // case 9: return 0;
+    //     //     break;
+    //     default: 
+    //         printf("Option invalide!\n");
+    // }
+    // }while (OptionSousMenuNote != 7);
+    
+}
 
 int valider_note(float note) {
     return note >= NOTE_MIN && note <= NOTE_MAX;
@@ -24,10 +79,10 @@ float saisir_note_valide(const char* message) {
     return note;
 }
 
-void ajouter_note_etudiant_matiere() {
-    Note note;
+void ajouter_note_etudiant_matiere(){
+    Etre_note note;
     Etudiant etudiant;
-    Matiere matiere;
+    matiere matiere;
     int etudiant_existe = 0, matiere_existe = 0;
     
     printf("Numero etudiant: ");
@@ -41,7 +96,7 @@ void ajouter_note_etudiant_matiere() {
                     etudiant.prenom, 
                     etudiant.email, 
                     etudiant.date_naissance, 
-                    &etudiant.code_classe) != EOF) {
+                    &etudiant.code) != EOF) {
             if (etudiant.numero == note.numero_etudiant) {
                 etudiant_existe = 1;
                 break;
@@ -56,15 +111,15 @@ void ajouter_note_etudiant_matiere() {
     }
     
     printf("Reference matiere: ");
-    scanf("%s", note.reference_matiere);
+    scanf("%d", &note.reference_matiere);
     
     FILE *f_matieres = fopen("matieres.csv", "r");
     if (f_matieres) {
-        while(fscanf(f_matieres, "%[^,],%[^,],%d\n", 
-                    matiere.reference, 
+        while(fscanf(f_matieres, "%d,%[^,],%d\n", 
+                    &matiere.reference, 
                     matiere.libelle, 
                     &matiere.coefficient) != EOF) {
-            if (strcmp(matiere.reference, note.reference_matiere) == 0) {
+            if (matiere.reference == note.reference_matiere) {
                 matiere_existe = 1;
                 break;
             }
@@ -96,7 +151,7 @@ void ajouter_note_etudiant_matiere() {
 
 void afficher_note_etudiant_matiere() {
     int numero;
-    char reference[15];
+    int reference;
     Etre_note en;
     int trouve = 0;
     
@@ -104,7 +159,7 @@ void afficher_note_etudiant_matiere() {
     scanf("%d", &numero);
     
     printf("Reference matiere: ");
-    scanf("%s", reference);
+    scanf("%d", &reference);
     
     FILE *fichier = fopen(FICHIER_ETRE_NOTE, "r");
     if (!fichier) {
@@ -112,15 +167,15 @@ void afficher_note_etudiant_matiere() {
         return;
     }
     
-    printf("\n=== Notes de l'etudiant %d dans %s ===\n", numero, reference);
+    printf("\n=== Notes de l'etudiant %d dans %d ===\n", numero, reference);
     
-    while(fscanf(fichier, "%d,%[^,],%f,%f\n", 
+    while(fscanf(fichier, "%d,%d,%f,%f\n", 
                  &en.numero_etudiant, 
-                 en.reference_matiere, 
+                 &en.reference_matiere, 
                  &en.noteCC, 
                  &en.noteDS) != EOF) {
         if (en.numero_etudiant == numero && 
-            strcmp(en.reference_matiere, reference) == 0) {
+            en.reference_matiere == reference ) {
             float moyenne = calculer_moyenne(en.noteCC, en.noteDS);
             printf("CC: %.2f | DS: %.2f | Moyenne: %.2f\n", 
                    en.noteCC, 
@@ -136,11 +191,12 @@ void afficher_note_etudiant_matiere() {
     
     fclose(fichier);
 }
-
+//calculer_moyenne
+// matiere_associee_classe
 
 void afficher_note_etudiant_classe() {
     int numero;
-    char reference[15];
+    int reference;
     Etre_note en;
     int trouve = 0;
     
@@ -148,7 +204,7 @@ void afficher_note_etudiant_classe() {
     scanf("%d", &numero);
     
     printf("Reference matiere: ");
-    scanf("%s", reference);
+    scanf("%d", &reference);
     
     FILE *fichier = fopen(FICHIER_ETRE_NOTE, "r");
     if (!fichier) {
@@ -156,15 +212,15 @@ void afficher_note_etudiant_classe() {
         return;
     }
     
-    printf("\n=== Relations pour l'etudiant %d dans %s ===\n", numero, reference);
+    printf("\n=== Relations pour l'etudiant %d dans %d ===\n", numero, reference);
     
-    while(fscanf(fichier, "%d,%[^,],%f,%f\n", 
+    while(fscanf(fichier, "%d,%d,%f,%f\n", 
                  &en.numero_etudiant, 
-                 en.reference_matiere, 
+                 &en.reference_matiere, 
                  &en.noteCC, 
                  &en.noteDS) != EOF) {
         if (en.numero_etudiant == numero && 
-            strcmp(en.reference_matiere, reference) == 0) {
+            en.reference_matiere == reference) {
             float moyenne = (en.noteCC + en.noteDS) / 2;
             printf("CC: %.2f | DS: %.2f | Moyenne: %.2f\n", 
                    en.noteCC, 
@@ -183,7 +239,7 @@ void afficher_note_etudiant_classe() {
 
 void ajouter_note_classe_matiere() {
     int code_classe;
-    char reference_matiere[15];
+    int reference_matiere;
     Etudiant etudiant;
     Etre_note en;
     
@@ -191,17 +247,17 @@ void ajouter_note_classe_matiere() {
     scanf("%d", &code_classe);
     
     printf("Etrer la Reference de la matiere: ");
-    scanf("%s", reference_matiere);
+    scanf("%d", &reference_matiere);
     
-    Matiere matiere;
+    matiere matiere;
     int matiere_existe = 0;
     FILE *f_matieres = fopen("matieres.csv", "r");
     if (f_matieres) {
-        while(fscanf(f_matieres, "%[^,],%[^,],%d\n", 
-                    matiere.reference, 
+        while(fscanf(f_matieres, "%d,%[^,],%d\n", 
+                    &matiere.reference, 
                     matiere.libelle, 
                     &matiere.coefficient) != EOF) {
-            if (strcmp(matiere.reference, reference_matiere) == 0) {
+            if (matiere.reference == reference_matiere) {
                 matiere_existe = 1;
                 break;
             }
@@ -224,7 +280,7 @@ void ajouter_note_classe_matiere() {
         return;
     }
     
-    printf("\nSaisie des relations pour la classe %d en %s\n", code_classe, reference_matiere);
+    printf("\nSaisie des relations pour la classe %d en %d\n", code_classe, reference_matiere);
     
     while(fscanf(f_etudiants, "%d,%[^,],%[^,],%[^,],%[^,],%d\n", 
                 &etudiant.numero, 
@@ -232,17 +288,17 @@ void ajouter_note_classe_matiere() {
                 etudiant.prenom, 
                 etudiant.email, 
                 etudiant.date_naissance, 
-                &etudiant.code_classe) != EOF) {
-        if (etudiant.code_classe == code_classe) {
+                &etudiant.code) != EOF) {
+        if (etudiant.code == code_classe) {
             printf("\nEtudiant: %s %s\n", etudiant.prenom, etudiant.nom);
             
             en.numero_etudiant = etudiant.numero;
-            strcpy(en.reference_matiere, reference_matiere);
+            en.reference_matiere == reference_matiere;
             
             en.noteCC = saisir_note_valide("Note CC");
             en.noteDS = saisir_note_valide("Note DS");
             
-            fprintf(f_notes, "%d,%s,%.2f,%.2f\n", 
+            fprintf(f_notes, "%d,%d,%.2f,%.2f\n", 
                     en.numero_etudiant, 
                     en.reference_matiere, 
                     en.noteCC, 
@@ -273,9 +329,9 @@ void afficher_note_etudiant_toutes_matieres() {
     
     printf("\n=== Toutes les relations pour l'etudiant %d ===\n", &numero);
     
-    while(fscanf(fichier, "%d,%[^,],%f,%f\n", 
+    while(fscanf(fichier, "%d,%d,%f,%f\n", 
                  &en.numero_etudiant, 
-                 en.reference_matiere, 
+                 &en.reference_matiere, 
                  &en.noteCC, 
                  &en.noteDS) != EOF) {
         if (en.numero_etudiant == numero) {
@@ -303,7 +359,7 @@ void afficher_note_etudiant_toutes_matieres() {
 
 void modifier_note() {
     int numero;
-    char reference[15];
+    int reference;
     Etre_note en;
     int trouve = 0;
     FILE *fichier = fopen(FICHIER_ETRE_NOTE, "r");
@@ -313,7 +369,7 @@ void modifier_note() {
     scanf("%d", &numero);
     
     printf("Reference matiere: ");
-    scanf("%s", reference);
+    scanf("%d", &reference);
 
     if (!fichier || !temp) {
         printf("Erreur d'ouverture des fichiers!\n");
@@ -322,19 +378,19 @@ void modifier_note() {
         return;
     }
 
-    while(fscanf(fichier, "%d,%[^,],%f,%f\n", 
+    while(fscanf(fichier, "%d,%d,%f,%f\n", 
                &en.numero_etudiant, 
-               en.reference_matiere, 
+               &en.reference_matiere, 
                &en.noteCC, 
                &en.noteDS) != EOF) {
         if (en.numero_etudiant == numero && 
-            strcmp(en.reference_matiere, reference) == 0) {
+            en.reference_matiere == reference){
             printf("Anciennes notes - CC: %.2f, DS: %.2f\n", en.noteCC, en.noteDS);
             en.noteCC = saisir_note_valide("Nouvelle note CC");
             en.noteDS = saisir_note_valide("Nouvelle note DS");
             trouve = 1;
         }
-        fprintf(temp, "%d,%s,%.2f,%.2f\n", 
+        fprintf(temp, "%d,%d,%.2f,%.2f\n", 
                 en.numero_etudiant, 
                 en.reference_matiere, 
                 en.noteCC, 
@@ -356,7 +412,7 @@ void modifier_note() {
 
 void supprimer_note() {
     int numero;
-    char reference[15];
+    int reference;
     Etre_note en;
     int trouve = 0;
     FILE *fichier = fopen(FICHIER_ETRE_NOTE, "r");
@@ -366,7 +422,7 @@ void supprimer_note() {
     scanf("%d", &numero);
     
     printf("Reference matiere: ");
-    scanf("%s", reference);
+    scanf("%s", &reference);
 
     if (!fichier || !temp) {
         printf("Erreur d'ouverture des fichiers!\n");
@@ -375,21 +431,21 @@ void supprimer_note() {
         return;
     }
 
-    while(fscanf(fichier, "%d,%[^,],%f,%f\n", 
+    while(fscanf(fichier, "%d,%d,%f,%f\n", 
                &en.numero_etudiant, 
-               en.reference_matiere, 
+               &en.reference_matiere, 
                &en.noteCC, 
                &en.noteDS) != EOF) {
         if (en.numero_etudiant == numero && 
-            strcmp(en.reference_matiere, reference) == 0) {
-            printf("Relation supprimee: %d %s (CC: %.2f, DS: %.2f)\n", 
+           en.reference_matiere == reference){
+            printf("Relation supprimee: %d %d (CC: %.2f, DS: %.2f)\n", 
                    en.numero_etudiant, 
                    en.reference_matiere, 
                    en.noteCC, 
                    en.noteDS);
             trouve = 1;
         } else {
-            fprintf(temp, "%d,%s,%.2f,%.2f\n", 
+            fprintf(temp, "%d,%d,%.2f,%.2f\n", 
                     en.numero_etudiant, 
                     en.reference_matiere, 
                     en.noteCC, 
@@ -409,11 +465,11 @@ void supprimer_note() {
         printf("Aucune relation trouvee!\n");
     }
 }
-
+// calculer_moyenne
 void ajouter_note_etudiant_toutes_matieres() {
     int numero;
     Etudiant etudiant;
-    Matiere matiere;
+    matiere matiere;
     Etre_note en;
     int etudiant_trouve = 0;
     int nb_matieres = 0;
@@ -430,7 +486,7 @@ void ajouter_note_etudiant_toutes_matieres() {
                     etudiant.prenom, 
                     etudiant.email, 
                     etudiant.date_naissance, 
-                    &etudiant.code_classe) != EOF) {
+                    &etudiant.code) != EOF) {
             if (etudiant.numero == numero) {
                 etudiant_trouve = 1;
                 break;
@@ -445,7 +501,7 @@ void ajouter_note_etudiant_toutes_matieres() {
     }
 
     // Ouvrir le fichier des matières et le fichier des relations
-    FILE *f_mat = fopen("matieres.csv", "r");
+    FILE *f_mat = fopen("matiere.csv", "r");
     FILE *f_notes = fopen(FICHIER_ETRE_NOTE, "a");
 
     if (!f_mat || !f_notes) {
@@ -458,21 +514,21 @@ void ajouter_note_etudiant_toutes_matieres() {
     printf("\nSaisie des notes pour %s %s\n", etudiant.prenom, etudiant.nom);
 
     // Parcourir toutes les matières associées à la classe de l'étudiant
-    while(fscanf(f_mat, "%[^,],%[^,],%d\n", 
-                matiere.reference, 
+    while(fscanf(f_mat, "%d,%[^,],%d\n", 
+                &matiere.reference, 
                 matiere.libelle, 
                 &matiere.coefficient) != EOF) {
         // Vérifier si la matière est associée à la classe de l'étudiant
-        if (matiere_associee_classe(matiere.reference, etudiant.code_classe)) {
+        if (matiere_associee_classe(matiere.reference, etudiant.code)) {
             printf("\nMatiere: %s (Coeff: %d)\n", matiere.libelle, matiere.coefficient);
             
             en.numero_etudiant = numero;
-            strcpy(en.reference_matiere, matiere.reference);
+            en.reference_matiere = matiere.reference;
             
             en.noteCC = saisir_note_valide("Note CC");
             en.noteDS = saisir_note_valide("Note DS");
             
-            fprintf(f_notes, "%d,%s,%.2f,%.2f\n", 
+            fprintf(f_notes, "%d,%d,%.2f,%.2f\n", 
                     en.numero_etudiant, 
                     en.reference_matiere, 
                     en.noteCC, 

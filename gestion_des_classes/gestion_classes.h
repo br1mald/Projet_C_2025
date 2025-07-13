@@ -9,6 +9,7 @@ typedef struct Classe {
     Niveau niveau;
 } Classe;
 
+void sous_menu_classe();
 void add_class(Classe classes[], int* size, int max_capacity);
 void remove_class(Classe classes[], int* size);
 void modify_class(Classe classes[], int* size);

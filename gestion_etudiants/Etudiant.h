@@ -2,20 +2,20 @@
     #define ETUDIANT_H
 #endif 
 
-typedef struct Date {
+typedef struct{
     int jour;
     int mois;
     int annee;
-} Date;
+}Date;
 
-typedef struct Etudiant {
+typedef struct Etudiant{
     int numero;
     char nom[50];
     char prenom[50];
     char email[100];
     Date date_naissance;
     int code;
-} Etudiant;
+}Etudiant;
 
 
 int ajou_etudiant();

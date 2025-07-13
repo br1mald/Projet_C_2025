@@ -2,67 +2,67 @@
 #include <string.h>
 #include "gestion_classes.h"
 
-int main(){
+void sous_menu_classe(){
 
-    int size = 0;
-    Classe classes[50];
-    int choice, nombre;
-    char continuer[5] = "oui";
+    // int size = 0;
+    // Classe classes[50];
+    // int choice, nombre;
+    // char continuer[5] = "oui";
 
-    FILE *writer = fopen("classes.csv", "w");
+    // FILE *writer = fopen("classes.csv", "w");
 
-    while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
-        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Retourner au menu précédent\n");
-        scanf("%d", &choice);
-        switch (choice){
-            case 1:
-                printf("Veuillez saisir le nombre d'éléments à ajouter: \n");
-                scanf("%d", &nombre);
-                for (int i = 0; i < nombre; i++){
-                    printf("Ajout de la classe numéro %d\n", i + 1);
-                    add_class(classes, &size, 50);
-                    if (size >= 50) {
-                        printf("Impossible d'ajouter, le nombre de classe a atteint le maximum\n");
-                        break;
-                    }
-                    write_to_file(classes, &size);
-                }
-                break;
-            case 2:
-                printf("Combien de classes souhaitez-vous supprimer?\n");
-                scanf("%d", &nombre);
-                for (int i = 0; i < nombre; i++) remove_class(classes, &size);
-                actualize(classes, &size);
-                break;
-            case 3:
-                printf("Combien de classes souhaitez-vous modifier?\n");
-                scanf("%d", &nombre);
-                for (int i = 0; i < nombre; i++) modify_class(classes, &size);
-                actualize(classes, &size);
-                break;
-            case 4:
-                if (size > 0){
-                    printf("Affichage des classes\n");
-                    FILE *reader = fopen("classes.csv", "r");
-                    char buffer[255];
-                    for (int i = 0; i < size; i++){
-                        fgets(buffer, 255, reader);
-                        printf("%s", buffer);
-                    }
-                } else printf("Aucune classe à afficher\n");
-                break;
-            case 5:
-                printf("Retour au menu précédent"); //Ajouter plus tard
-            default:
-                printf("Veuillez entrer le numéro de l'opération à réaliser\n");
-        }
-    printf("Souhaitez vous continuer?\n");
-    scanf("%s", continuer);
-    }
+    // while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
+    //     printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Retourner au menu précédent\n");
+    //     scanf("%d", &choice);
+    //     switch (choice){
+    //         case 1:
+    //             printf("Veuillez saisir le nombre d'éléments à ajouter: \n");
+    //             scanf("%d", &nombre);
+    //             for (int i = 0; i < nombre; i++){
+    //                 printf("Ajout de la classe numéro %d\n", i + 1);
+    //                 add_class(classes, &size, 50);
+    //                 if (size >= 50) {
+    //                     printf("Impossible d'ajouter, le nombre de classe a atteint le maximum\n");
+    //                     break;
+    //                 }
+    //                 write_to_file(classes, &size);
+    //             }
+    //             break;
+    //         case 2:
+    //             printf("Combien de classes souhaitez-vous supprimer?\n");
+    //             scanf("%d", &nombre);
+    //             for (int i = 0; i < nombre; i++) remove_class(classes, &size);
+    //             actualize(classes, &size);
+    //             break;
+    //         case 3:
+    //             printf("Combien de classes souhaitez-vous modifier?\n");
+    //             scanf("%d", &nombre);
+    //             for (int i = 0; i < nombre; i++) modify_class(classes, &size);
+    //             actualize(classes, &size);
+    //             break;
+    //         case 4:
+    //             if (size > 0){
+    //                 printf("Affichage des classes\n");
+    //                 FILE *reader = fopen("classes.csv", "r");
+    //                 char buffer[255];
+    //                 for (int i = 0; i < size; i++){
+    //                     fgets(buffer, 255, reader);
+    //                     printf("%s", buffer);
+    //                 }
+    //             } else printf("Aucune classe à afficher\n");
+    //             break;
+    //         case 5:
+    //             printf("Retour au menu précédent"); //Ajouter plus tard
+    //         default:
+    //             printf("Veuillez entrer le numéro de l'opération à réaliser\n");
+    //     }
+    // printf("Souhaitez vous continuer?\n");
+    // scanf("%s", continuer);
+    // }
 
-    for (int i = 0; i < size; i++){
-        printf("%s\n", classes[i].nom);
-    }
+    // for (int i = 0; i < size; i++){
+    //     printf("%s\n", classes[i].nom);
+    // }
 }
 
 void add_class(Classe classes[], int *size, int max_capacity){

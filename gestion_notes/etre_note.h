@@ -1,17 +1,13 @@
 #ifndef ETRE_NOTE_H
 #define ETRE_NOTE_H
 
-#include "etudiant.h"
-#include "matiere.h"
-#include "classe.h"
-
 #define FICHIER_NOTES "notes.csv"
 #define NOTE_MIN 0.0f
 #define NOTE_MAX 20.0f
 
 typedef struct {
     int numero_etudiant;
-    char reference_matiere[15];
+    int reference_matiere;
     float noteCC;
     float noteDS;
 } Etre_note;
@@ -20,7 +16,7 @@ typedef struct {
 int valider_note(float note);
 float saisir_note_valide(const char* message);
 float calculer_moyenne(float noteCC, float noteDS);
-int matiere_associee_classe(const char* ref_matiere, int code_classe);
+int matiere_associee_classe(int ref_matiere, int code_classe);
 
 // Fonctions principales
 void ajouter_note_etudiant_matiere();
@@ -31,5 +27,6 @@ void supprimer_note();
 void afficher_note_etudiant_matiere();
 void afficher_note_classe_matiere();
 void afficher_note_etudiant_toutes_matieres();
+void sous_menu_note();
 
 #endif

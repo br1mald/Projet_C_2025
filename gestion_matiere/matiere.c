@@ -3,46 +3,46 @@
 #include "matiere.h"
 
 matiere matiere_ajouter;
-int menu_matiere()
+void sous_menu_matiere()
 {
-    int optionSousMenuMatiere;
+    // int optionSousMenuMatiere;
 
-    do 
-    {
-        printf("  \n\nGestion des matieres\n");
-        printf(" \t 1. Ajout matiere \n\t 2. Modification matiere \n\t 3. Recherche de matiere \n\t 4. Affichage des matieres \n\t 5. Suppression de matieres\n\t 6. Precedent \n\t 7. Quitter \n");
-        printf("\nVeuillez choisir votre option du sous menu matiere : ");
-        scanf("%d", &optionSousMenuMatiere);
-        switch(optionSousMenuMatiere)
-        {
-            case 1: printf("Ajouter une matiere\n");
-                    ajouter_matiere();
-                break;
-            case 2: printf("Modifier une matiere\n");
-                    modifier_matiere();
-                break;
-            case 3 : printf("Recherche une matiere\n");
-                    int reference;
-                    printf("Donnez la reference de la matiere a rechercher : ");
-                    scanf("%d", &reference);
-                    if(rechercher_matiere(reference))
-                        printf(" Reference : %d \n Libelle : %s \n Coefficient : %d", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
-                    else
-                        printf("L'element est absent dans la liste des matieres.\n");
-                break;
-            case 4: printf("Voici la liste des matieres\n");
-                    afficher_matiere();
-                break;
-            case 5: printf("Supprimer une matiere\n");
-                    supprimer_matiere();
-                break;
-            case 6: return 0;
-                break;
-            case 7: exit(1);
-                break;
-            default :  printf("Il faut choisir parmi les options!");
-        }
-    }while (optionSousMenuMatiere != 7);
+    // do 
+    // {
+    //     printf("  \n\nGestion des matieres\n");
+    //     printf(" \t 1. Ajout matiere \n\t 2. Modification matiere \n\t 3. Recherche de matiere \n\t 4. Affichage des matieres \n\t 5. Suppression de matieres\n\t 6. Precedent \n\t 7. Quitter \n");
+    //     printf("\nVeuillez choisir votre option du sous menu matiere : ");
+    //     scanf("%d", &optionSousMenuMatiere);
+    //     switch(optionSousMenuMatiere)
+    //     {
+    //         case 1: printf("Ajouter une matiere\n");
+    //                 ajouter_matiere();
+    //             break;
+    //         case 2: printf("Modifier une matiere\n");
+    //                 modifier_matiere();
+    //             break;
+    //         case 3 : printf("Recherche une matiere\n");
+    //                 int reference;
+    //                 printf("Donnez la reference de la matiere a rechercher : ");
+    //                 scanf("%d", &reference);
+    //                 if(rechercher_matiere(reference))
+    //                     printf(" Reference : %d \n Libelle : %s \n Coefficient : %d", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
+    //                 else
+    //                     printf("L'element est absent dans la liste des matieres.\n");
+    //             break;
+    //         case 4: printf("Voici la liste des matieres\n");
+    //                 afficher_matiere();
+    //             break;
+    //         case 5: printf("Supprimer une matiere\n");
+    //                 supprimer_matiere();
+    //             break;
+    //         // case 6: return 0;
+    //         //     break;
+    //         case 7: exit(1);
+    //             break;
+    //         default :  printf("Il faut choisir parmi les options!");
+    //     }
+    // }while (optionSousMenuMatiere != 7);
     
     
 }
@@ -68,36 +68,45 @@ static int reference_existe(int x)
 
 void ajouter_matiere()
 {
-    printf("\t\tDonner une reference de la matiere : ");
-    scanf("%d", &matiere_ajouter.reference);
-
-    int retour_fonction_ref_existe = reference_existe(matiere_ajouter.reference);
-    while(retour_fonction_ref_existe == 1)
-    {
-        printf("\t\tLa reference donnée existe deja\n");
-        printf("\t\tVeuillez saisir une autre reference : ");
-        scanf("%d", &matiere_ajouter.reference);
-        retour_fonction_ref_existe = reference_existe(matiere_ajouter.reference);
-    }
-    printf("\n\t\tDonner le libelle de la matiere : ");
-    scanf("%s", &matiere_ajouter.libelle);
-    printf("\n\t\tDonner le coefficient de la matiere :");
-    scanf("%d", &matiere_ajouter.coefficient);
-
-    FILE *matiere = fopen("matiere.csv","a");
-
-    
-    if (matiere == NULL)
+    int n,i;
+    do
     { 
-        printf("Erreur d'ouverture du fichier matiere");
-        exit(1);
+    printf("Combien de matiere souhaiter vous ajouter : ");
+    scanf("%d", &n);
+    }while(n <= 0);
+
+    for(i = 1; i <= n; i++)
+    { 
+        printf("\t\tDonner une reference de la matiere : ");
+        scanf("%d", &matiere_ajouter.reference);
+
+        int retour_fonction_ref_existe = reference_existe(matiere_ajouter.reference);
+        while(retour_fonction_ref_existe == 1)
+        {
+            printf("\t\tLa reference donnée existe deja\n");
+            printf("\t\tVeuillez saisir une autre reference : ");
+            scanf("%d", &matiere_ajouter.reference);
+            retour_fonction_ref_existe = reference_existe(matiere_ajouter.reference);
+        }
+        printf("\n\t\tDonner le libelle de la matiere : ");
+        scanf("%s", &matiere_ajouter.libelle);
+        printf("\n\t\tDonner le coefficient de la matiere :");
+        scanf("%d", &matiere_ajouter.coefficient);
+
+        FILE *matiere = fopen("matiere.csv","a");
+
+        
+        if (matiere == NULL)
+        { 
+            printf("Erreur d'ouverture du fichier matiere");
+            exit(1);
+        }
+
+        fprintf(matiere, "%d  %s  %d \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+
+        fclose(matiere);
+        printf("Ajout reussi\n");
     }
-
-    fprintf(matiere, "%d  %s  %d \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
-
-    fclose(matiere);
-    printf("Ajout reussi\n");
-    
     
 }
 
@@ -105,14 +114,22 @@ void ajouter_matiere()
 
 void modifier_matiere()
 {
-        int numeroEnreg;
-        
+    int numeroEnreg;
+    int n,i;
+    do
+    { 
+        printf("Combien de matiere souhaiter vous modifier : ");
+        scanf("%d", &n);
+    }while(n <= 0);
+    
+    for(i = 1; i <= n; i++)
+    { 
         printf("Numero de l'enregistrement a modifier : ");
         scanf("%d", &numeroEnreg);
 
         FILE *matiere = fopen("matiere.csv","r");
         FILE *temp = fopen("temp.csv", "w");
-    
+
 
         if( matiere == NULL || temp == NULL )
         { 
@@ -146,6 +163,7 @@ void modifier_matiere()
         remove("matiere.csv");
         rename("temp.csv", "matiere.csv");
         printf("Enregistrement modifie avec succees\n");
+    }
 }
 
 
@@ -174,7 +192,15 @@ int rechercher_matiere(int reference_rechercher)
 void supprimer_matiere()
 {
     int reference_a_supp;
-    
+    int n,i;
+    do
+    { 
+        printf("Combien de matiere souhaiter vous modifier : ");
+        scanf("%d", &n);
+    }while(n <= 0); 
+
+    for(i = 1; i <= n; i++)
+    {
         printf("Entrez la reference de la matiere a supprimer : ");
         scanf("%d", &reference_a_supp);
 
@@ -214,6 +240,7 @@ void supprimer_matiere()
             printf("RENOMMAGE REUSSIE\n");
             
         printf("Matiere supprimee avec succes.\n");
+    }
 }
 
 
