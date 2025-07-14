@@ -1,13 +1,14 @@
 #ifndef ETRE_NOTE_H
 #define ETRE_NOTE_H
 
-#define FICHIER_NOTES "notes.csv"
-#define NOTE_MIN 0.0f
-#define NOTE_MAX 20.0f
-
+typedef struct Etudiant Etudiant;
+typedef struct Matiere Matiere;
+typedef struct Classe Classe;
 typedef struct {
     int numero_etudiant;
     int reference_matiere;
+    int numero;
+    int reference;
     float noteCC;
     float noteDS;
 } Etre_note;
@@ -27,6 +28,5 @@ void supprimer_note();
 void afficher_note_etudiant_matiere();
 void afficher_note_classe_matiere();
 void afficher_note_etudiant_toutes_matieres();
-void sous_menu_note();
 
 #endif
