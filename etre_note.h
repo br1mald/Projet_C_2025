@@ -2,9 +2,9 @@
 #define ETRE_NOTE_H
 
 typedef struct Etudiant Etudiant;
-typedef struct Matiere Matiere;
+typedef struct matiere matiere;
 typedef struct Classe Classe;
-typedef struct {
+typedef struct Etre_note{
     int numero;
     int reference;
     float noteCC;
