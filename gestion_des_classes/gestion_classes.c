@@ -2,7 +2,7 @@
 #include <string.h>
 #include "gestion_classes.h"
 
-int main(){
+void gestionclasses(){
 
     int size = 0;
     Classe classes[50];
@@ -16,6 +16,10 @@ int main(){
         scanf("%d", &choice);
         switch (choice){
             case 1:
+                if (size == 50) {
+                    printf("Maximum de classes atteint\n");
+                    break;
+                }
                 printf("Menu d'ajout de classes\n");
                 printf("Veuillez saisir le nombre d'éléments à ajouter: \n");
                 scanf("%d", &nombre);
@@ -30,6 +34,10 @@ int main(){
                 }
                 break;
             case 2:
+                if (size == 0) {
+                    printf("Aucune classe n'est disponible.\n");
+                    break;
+                }
                 printf("Menu de suppression de classes\n");
                 printf("Combien de classes souhaitez-vous supprimer?\n");
                 scanf("%d", &nombre);
@@ -41,6 +49,10 @@ int main(){
                 actualize(classes, &size);
                 break;
             case 3:
+                if (size == 0) {
+                    printf("Aucune classe n'est disponible.\n");
+                    break;
+                }
                 printf("Menu de modification de classes\n");
                 printf("Combien de classes souhaitez-vous modifier?\n");
                 scanf("%d", &nombre);
@@ -59,6 +71,10 @@ int main(){
                 } else printf("Aucune classe à afficher\n");
                 break;
             case 5:
+                if (size == 0) {
+                    printf("Aucune classe n'est disponible.\n");
+                    break;
+                }
                 printf("Menu d'information sur une classe\n");
                 printf("Veuillez saisir le code de la classe dont vous souhaitez connaître les informations\n");
                 scanf("%d", &target);
@@ -75,10 +91,6 @@ int main(){
         }
     printf("Souhaitez vous continuer?\n");
     scanf("%s", continuer);
-    }
-
-    for (int i = 0; i < size; i++){
-        printf("%s\n", classes[i].nom);
     }
 }
 
@@ -113,7 +125,7 @@ void remove_class(Classe classes[], int *size){
     int pos, target;
 
     if (*size == 0) printf("Aucune classe à supprimer\n");
-    else{
+    else {
         printf("Veuillez saisir le code de la classe à supprimer\n");
         scanf("%d", &target);
         pos = search(classes, target, *size);
