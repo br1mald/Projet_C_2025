@@ -85,8 +85,8 @@ void gestionclasses(){
                 printf("Nom de la classe: %s, Code: %d, Niveau: %s\n", classes[pos].nom, classes[pos].code, level);
                 break;
             case 6:
-                printf("Retour au menu précédent\n"); //Ajouter plus tard
-                break;
+                printf("Retour au menu principal\n"); //Ajouter plus tard
+                return;
             default:
                 printf("Veuillez entrer le numéro de l'opération à réaliser\n");
         }
