@@ -9,7 +9,8 @@ void gestionclasses(){
     int choice, nombre, target, pos;
     char continuer[5] = "oui", level[10];
 
-    FILE *writer = fopen("classes.csv", "w");
+    FILE *writer = fopen("classes.csv", "a");
+    write_from_file(classes, &size);
 
     while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
         printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Retourner au menu précédent\n");
@@ -214,4 +215,15 @@ void actualize(Classe classes[], int *size){
         fprintf(writer, "%d,%s,%s\n", classes[i].code, classes[i].nom, level);
     }
     fclose(writer);
+}
+
+void write_from_file(Classe classes[], int *size){
+    FILE *reader = fopen("classes.csv", "r");
+    char buffer[50],level[10];
+    while (fgets(buffer, sizeof(buffer), reader) != NULL) {
+        int line = sscanf(buffer, "%d,%29[^,],%9[^\n]", &classes[*size].code, classes[*size].nom, level);
+        if (strcmp(level, "Licence") == 0) classes[*size].niveau = Licence;
+        else if (strcmp(level, "Master") == 0) classes[*size].niveau = Master;
+        (*size)++;
+    }
 }
