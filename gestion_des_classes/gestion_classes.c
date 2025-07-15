@@ -3,17 +3,19 @@
 #include "gestion_classes.h"
 
 void gestionclasses(){
-
+    Se_faire tab[255];
+    int se_faire_size = 0;
     int size = 0;
     Classe classes[50];
-    int choice, nombre, target, pos;
+    int choice, nombre, target, pos, code, reference;
     char continuer[5] = "oui", level[10];
 
     FILE *writer = fopen("classes.csv", "a");
-    write_from_file(classes, &size);
+    initialize_classes(classes, &size);
+    initialize_se_faire(tab, &se_faire_size);
 
     while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
-        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Retourner au menu précédent\n");
+        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Associer une classe à une matière\n7. Retourner au menu précédent\n");
         scanf("%d", &choice);
         switch (choice){
             case 1:
@@ -85,6 +87,13 @@ void gestionclasses(){
                 printf("Nom de la classe: %s, Code: %d, Niveau: %s\n", classes[pos].nom, classes[pos].code, level);
                 break;
             case 6:
+                printf("Veuillez saisir le code de la classe à associer: \n");
+                scanf("%d", &code);
+                printf("Veuillez saisir la référence de la matière à associer: \n");
+                scanf("%d", &reference);
+                matiere_classe(code, reference, classes, &size, tab, &se_faire_size);
+                break;
+            case 7:
                 printf("Retour au menu principal\n"); //Ajouter plus tard
                 return;
             default:
@@ -217,7 +226,7 @@ void actualize(Classe classes[], int *size){
     fclose(writer);
 }
 
-void write_from_file(Classe classes[], int *size){
+void initialize_classes(Classe classes[], int *size){
     FILE *reader = fopen("classes.csv", "r");
     char buffer[50],level[10];
     while (fgets(buffer, sizeof(buffer), reader) != NULL) {
@@ -225,5 +234,26 @@ void write_from_file(Classe classes[], int *size){
         if (strcmp(level, "Licence") == 0) classes[*size].niveau = Licence;
         else if (strcmp(level, "Master") == 0) classes[*size].niveau = Master;
         (*size)++;
+    }
+}
+
+void matiere_classe(int class_code, int mat_reference, Classe classes[], int *size, Se_faire tab[], int *se_faire_size){
+    // if (search(classes, class_code, *size) != -1 && (search(classes, mat_reference, *size) != -1)) {
+        tab[*se_faire_size].code = class_code;
+        tab[*se_faire_size].reference = mat_reference;
+    // } else printf("Matière ou classe inexistante. Veuillez vérifier puis réessayer.\n");
+
+    FILE *writer = fopen("se_faire.csv", "a");
+    fprintf(writer, "%d,%d\n", tab[*se_faire_size].code, tab[*se_faire_size].reference);
+    fclose(writer);
+    (*se_faire_size)++;
+}
+
+void initialize_se_faire(Se_faire tab[], int *se_faire_size){
+    FILE *reader = fopen("se_faire.csv", "r");
+    char buffer[50],level[10];
+    while (fgets(buffer, sizeof(buffer), reader) != NULL) {
+        int line = sscanf(buffer, "%d,%d", &tab[*se_faire_size].code, &tab[*se_faire_size].reference);
+        (*se_faire_size)++;
     }
 }
