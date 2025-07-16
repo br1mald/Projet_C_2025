@@ -13,11 +13,16 @@ typedef struct {
     float noteDS;
 } Etre_note;
 
+int valider_note(float note);
+float saisir_note_valide(const char* message);
+float calculer_moyenne(float noteCC, float noteDS);
+int matiere_associee_classe(int ref_matiere, int code_classe);
 // Fonctions utilitaires
 int valider_note(float note);
 float saisir_note_valide(const char* message);
 float calculer_moyenne(float noteCC, float noteDS);
 int matiere_associee_classe(int ref_matiere, int code_classe);
+void ajouter_association(int code_classe, int reference_matiere);
 
 // Fonctions principales
 int gestion_notes();

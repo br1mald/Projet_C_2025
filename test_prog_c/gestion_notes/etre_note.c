@@ -1,3 +1,14 @@
+// Ajoute une association classe-matière dans Se_faire.csv
+void ajouter_association(int code_classe, int reference_matiere) {
+    FILE *f = fopen("gestion_des_classes/Se_faire.csv", "a");
+    if (f) {
+        fprintf(f, "%d,%d\n", code_classe, reference_matiere);
+        fclose(f);
+        printf("Association %d <-> %d ajoutée !\n", code_classe, reference_matiere);
+    } else {
+        printf("Erreur d'ouverture du fichier Se_faire.csv\n");
+    }
+}
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,9 +34,10 @@ int gestion_notes()
     printf("8. Afficher note etudiant-toutes matieres\n");
     printf("9. Retour au menu principal\n");
     printf("10. Quitter le programme\n");
+    printf("11. Associer une matiere a une classe\n");
     printf("\nVeuillez choisir une option du sous menu note: ");
     scanf("%d", &option);
-    
+
     switch(option) {
         case 1: ajouter_note_etudiant_matiere(); break;
         case 2: ajouter_note_etudiant_toutes_matieres(); break;
@@ -40,8 +52,17 @@ int gestion_notes()
         case 10: 
             printf("Au revoir!\n");
             return 0;
+        case 11: {
+            int code_classe, ref_matiere;
+            printf("Entrer le code de la classe: ");
+            scanf("%d", &code_classe);
+            printf("Entrer la reference de la matiere: ");
+            scanf("%d", &ref_matiere);
+            ajouter_association(code_classe, ref_matiere);
+            break;
+        }
         default: printf("Option invalide!\n"); goto notes_menu; // Retourne au menu des notes
-    }  
+    }
     return 2;
 }
 
@@ -660,19 +681,15 @@ void ajouter_note_classe_matiere() {
 }
 
 int matiere_associee_classe(int ref_matiere, int code_classe) {
-    FILE *f = fopen("matiere_classe.csv", "r");
+    FILE *f = fopen("gestion_des_classes/Se_faire.csv", "r");
     if (!f) return 0;
-    
-    int ref, code;
-    int trouve = 0;
-    
-    while (fscanf(f, "%d,%d\n", &ref, &code) == 2) {
+    int code, ref;
+    while (fscanf(f, "%d,%d\n", &code, &ref) == 2) {
         if (ref == ref_matiere && code == code_classe) {
-            trouve = 1;
-            break;
+            fclose(f);
+            return 1;
         }
     }
-    
     fclose(f);
-    return trouve;
+    return 0;
 }
