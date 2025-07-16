@@ -9,7 +9,7 @@ void associer_matiere_classe(int class_code, int mat_reference, Classe classes[]
         tab[*se_faire_size].code = class_code;
         tab[*se_faire_size].reference = mat_reference;
 
-        FILE *writer = fopen("gestion_des_classes/se_faire.csv", "a");
+        FILE *writer = fopen("gestion_classes/se_faire.csv", "a");
         fprintf(writer, "%d,%d\n", tab[*se_faire_size].code, tab[*se_faire_size].reference);
         fclose(writer);
 
@@ -20,7 +20,7 @@ void associer_matiere_classe(int class_code, int mat_reference, Classe classes[]
 
 int rechercher_association(int target_classe, int target_matiere) {
     int classe, matiere;
-    FILE *reader = fopen("gestion_des_classes/se_faire.csv", "r");
+    FILE *reader = fopen("gestion_classes/se_faire.csv", "r");
     char buffer[50];
     while (fgets(buffer, sizeof(buffer), reader) != NULL) {
         int line = sscanf(buffer, "%d, %d", &classe, &matiere);
@@ -30,7 +30,7 @@ int rechercher_association(int target_classe, int target_matiere) {
 }
 
 void initialize_se_faire(Se_faire tab[], int *se_faire_size) {
-    FILE *reader = fopen("gestion_des_classes/se_faire.csv", "r");
+    FILE *reader = fopen("gestion_classes/se_faire.csv", "r");
     char buffer[50],level[10];
     while (fgets(buffer, sizeof(buffer), reader) != NULL) {
         int line = sscanf(buffer, "%d,%d", &tab[*se_faire_size].code, &tab[*se_faire_size].reference);
@@ -39,12 +39,12 @@ void initialize_se_faire(Se_faire tab[], int *se_faire_size) {
 }
 
 void dissocier_matiere_classe(int target_classe, int target_matiere) {
-    FILE *og_file = fopen("gestion_des_classes/se_faire.csv", "r");
-    FILE *new_file = fopen("gestion_des_classes/temp.csv", "w");
+    FILE *og_file = fopen("gestion_classes/se_faire.csv", "r");
+    FILE *new_file = fopen("gestion_classes/temp.csv", "w");
 
     int classe_code, matiere_ref;
     char buffer[50];
-    const char *new_name = "gestion_des_classes/se_faire.csv";
+    const char *new_name = "gestion_classes/se_faire.csv";
 
     while (fgets(buffer, sizeof(buffer), og_file) != NULL) {
         int line = sscanf(buffer, "%d,%d", &classe_code, &matiere_ref);
@@ -55,13 +55,13 @@ void dissocier_matiere_classe(int target_classe, int target_matiere) {
     fclose(og_file);
     fclose(new_file);
 
-    remove("gestion_des_classes/se_faire.csv");
-    rename("gestion_des_classes/temp.csv", new_name);
+    remove("gestion_classes/se_faire.csv");
+    rename("gestion_classes/temp.csv", new_name);
 }
 
 void afficher_matieres_classe(int class_code) {
     FILE *matieres = fopen("gestion_matiere/matiere.csv", "r");
-    FILE *associations = fopen("gestion_des_classes/se_faire.csv", "r");
+    FILE *associations = fopen("gestion_classes/se_faire.csv", "r");
 
     char mat_buffer[50], asso_buffer[50], mat_name[15];
     int code, file_ref, ref;

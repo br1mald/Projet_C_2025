@@ -4,7 +4,7 @@
 #include "gestion_notes/etre_note.h"
 #include "gestion_etudiants/Etudiant.h"
 #include "gestion_matiere/matiere.h"
-#include "gestion_des_classes/gestion_classes.h"
+#include "gestion_classes/gestion_classes.h"
 
 
 int main()
