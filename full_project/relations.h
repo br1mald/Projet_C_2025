@@ -5,3 +5,4 @@ void associer_matiere_classe(int class_code, int mat_reference, Classe classes[]
 void initialize_se_faire(Se_faire tab[], int *se_faire_size);
 int rechercher_association(int target_classe, int target_matiere);
 void dissocier_matiere_classe(int target_classe, int target_matiere);
+void afficher_matieres_classe(int class_code);

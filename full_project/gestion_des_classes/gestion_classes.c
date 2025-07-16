@@ -11,11 +11,13 @@ int gestionclasses(){
     char continuer[5] = "oui", level[10];
 
     FILE *writer = fopen("gestion_des_classes/classes.csv", "a");
+    FILE *se_faire = fopen("gestion_des_classes/se_faire.csv", "a");
+
     initialize_classes(classes, &size);
     initialize_se_faire(tab_associations, &se_faire_size);
 
     while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
-        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Associer une classe à une matière\n7. Dissocier une classe et une matière\n8. Retourner au menu précédent\n");
+        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Associer une classe à une matière\n7. Dissocier une classe et une matière\n8. Afficher la liste des matières enseignées dans une classe\n9. Retourner au menu précédent\n");
         scanf("%d", &choice);
         switch (choice){
             case 1:
@@ -101,6 +103,11 @@ int gestionclasses(){
                 dissocier_matiere_classe(code, reference); // Fonction se trouve dans relations.c
                 break;
             case 8:
+                printf("Veuillez saisir le code de la classe dont vous souhaitez consulter les matières: \n");
+                scanf("%d", &code);
+                afficher_matieres_classe(code);
+                break;
+            case 9:
                 printf("Retour au menu principal\n");
                 return 1;
             default:
@@ -110,6 +117,7 @@ int gestionclasses(){
     scanf("%s", continuer);
     }
     fclose(writer);
+    fclose(se_faire);
     return 1;
 }
 
