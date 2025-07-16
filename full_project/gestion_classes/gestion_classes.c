@@ -89,6 +89,7 @@ int gestionclasses(){
                 printf("Nom de la classe: %s, Code: %d, Niveau: %s\n", classes[pos].nom, classes[pos].code, level);
                 break;
             case 6:
+                printf("Menu d'association de classe-matière\n");
                 printf("Veuillez saisir le code de la classe à associer: \n");
                 scanf("%d", &code);
                 printf("Veuillez saisir la référence de la matière à associer: \n");
@@ -96,6 +97,7 @@ int gestionclasses(){
                 associer_matiere_classe(code, reference, classes, &size, tab_associations, &se_faire_size); // Fonction se trouve dans relations.c
                 break;
             case 7:
+                printf("Menu de dissociation de classe-matière\n");
                 printf("Veuillez saisir le code de la classe à dissocier: \n");
                 scanf("%d", &code);
                 printf("Veuillez saisir la référence de la matière à dissocier: \n");
@@ -105,6 +107,8 @@ int gestionclasses(){
             case 8:
                 printf("Veuillez saisir le code de la classe dont vous souhaitez consulter les matières: \n");
                 scanf("%d", &code);
+                pos = search(classes, code, size);
+                printf("Liste des matières de la classe %s: \n", classes[pos].nom);
                 afficher_matieres_classe(code);
                 break;
             case 9:
