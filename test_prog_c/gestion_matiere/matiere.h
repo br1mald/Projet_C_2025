@@ -11,7 +11,7 @@ typedef struct
 {
     int reference_matiere;
     int code_classe;
-}se_faire;
+}Se_faire;
 
 int gestion_matiere();
 void ajouter_matiere();

@@ -320,7 +320,7 @@ static int code_existe(int x)
 
 void associer_matiere_classe()
 {
-    se_faire associer;
+    Se_faire associer;
 
     do
     { 
@@ -350,7 +350,7 @@ void associer_matiere_classe()
 
 void dissocier_matiere_classe()
 {
-    se_faire dissocier;
+    Se_faire dissocier;
     int code, reference;
     do
     { 
@@ -402,7 +402,7 @@ void dissocier_matiere_classe()
 
 void afficher_matiere_classe()
 {
-        se_faire association;
+        Se_faire association;
         FILE *matiere_classe = fopen("gestion_matiere/matiere_classe.csv","r");
 
         if(matiere_classe == NULL)
