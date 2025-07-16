@@ -140,6 +140,7 @@ void modifier_matiere()
             while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
             {
 
+
                 if(reference_existe(numeroEnreg == matiere_ajouter.reference))
                 {
                     printf("Entrez le nouveau libelle : ");
@@ -147,7 +148,6 @@ void modifier_matiere()
                     printf("Entrez le nouveau coefficient : ");
                     scanf("%hd", &matiere_ajouter.coefficient);
                 }
-                fprintf(temp,"%d %s %d \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
             }
 
         }
@@ -260,7 +260,7 @@ void afficher_matiere()
 
         while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference,matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
         {
-            printf("\t| %9d | %15s | %11d |\n", matiere_ajouter.reference,matiere_ajouter.libelle, matiere_ajouter.coefficient);
+            printf("\t| %9d | %15s | %11hd |\n", matiere_ajouter.reference,matiere_ajouter.libelle, matiere_ajouter.coefficient);
             printf("\t+-----------+-----------------+-------------+\n");
         }
 

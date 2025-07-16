@@ -17,12 +17,13 @@ int main()
     Classe classes[50];
     int choice, nombre;
     char continuer[5] = "oui";
+    FILE *writer = fopen("gestion_des_classes/classes.csv", "w");
 
     while(strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0)
     {
         princ_menu: printf("\n\n \tBienvenue dans notre programme");
         printf("\n\n******************************Menu*********************************************\n\n");
-        printf(" 1. Gestion des étudiants \n 2. Gestion des classes \n 3. Gestion des matieres \n 4. Gestion des notes\n 5. Quitter \n");
+        printf(" 1. Gestion des Etudiant \n 2. Gestion des classes \n 3. Gestion des matieres \n 4. Gestion des notes\n 5. Quitter \n");
         printf("\nVeuillez choisir votre option du Menu Principal : ");
         scanf("%d", &optionMenuPrincipal);
         printf("\n");
@@ -42,7 +43,7 @@ int main()
                     }
                 } break;
             case 2:
-                returnValue = gestionclasses();
+                returnValue = gestion_classes();
                 if (returnValue == 1) {
                         goto princ_menu ; // Retourne au menu principal
                     }else{
@@ -83,5 +84,6 @@ int main()
         printf("\nSouhaitez-vous continuer dans le menu principal? (oui/non): ");
         scanf("%s", continuer);
     }
+    fclose(writer);
     return 0;
 }

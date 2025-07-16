@@ -14,7 +14,7 @@ typedef struct {
     int reference;
 } Se_faire;
 
-int gestionclasses();
+int gestion_classes();
 void add_class(Classe classes[], int* size, int max_capacity);
 void remove_class(Classe classes[], int* size);
 void modify_class(Classe classes[], int* size);
