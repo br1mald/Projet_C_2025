@@ -442,10 +442,10 @@ void afficher_note_etudiant_toutes_matieres() {
     
     FILE *f_etud = fopen("etudiants.csv", "r");
     if (f_etud) {
-        while(fscanf(f_etud, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+        while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
-                &etudiant.code) != EOF) {
+                 &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, 
+                etudiant.email, &etudiant.code) != EOF) {
             if (etudiant.numero == numero) {
                 etudiant_trouve = 1;
                 break;
@@ -532,10 +532,10 @@ void ajouter_note_etudiant_toutes_matieres() {
 
     FILE *f_etud = fopen("etudiants.csv", "r");
     if (f_etud) {
-        while(fscanf(f_etud, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+        while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
-                &etudiant.code ) != EOF) {
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, 
+                etudiant.email, &etudiant.code ) != EOF) {
             if (etudiant.numero == numero) {
                 etudiant_trouve = 1;
                 break;
@@ -634,11 +634,11 @@ void ajouter_note_classe_matiere() {
     }
     
     printf("\nSaisie des notes pour la classe %d en %s\n", code_classe, matiere.libelle);
-    
-    while(fscanf(f_etudiants, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+
+    while(fscanf(f_etudiants, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
-                &etudiant.code) != EOF) {
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, 
+                etudiant.email, &etudiant.code) != EOF) {
         if (etudiant.code == code_classe) {
             printf("\nEtudiant: %s %s\n", etudiant.prenom, etudiant.nom);
             
