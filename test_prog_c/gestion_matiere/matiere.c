@@ -116,7 +116,7 @@ void ajouter_matiere()
             retour_fonction_ref_existe = reference_existe(matiere_ajouter.reference);
         }
         printf("\n\t\tDonner le libelle de la matiere : ");
-        scanf("%s", &matiere_ajouter.libelle);
+        scanf("%s", matiere_ajouter.libelle);
         printf("\n\t\tDonner le coefficient de la matiere :");
         scanf("%d", &matiere_ajouter.coefficient);
 
