@@ -191,7 +191,7 @@ void afficher_note_classe_matiere() {
     printf("+------+-------------------------+----------+----------+------------+\n");
     
     // Parcourir les étudiants de la classe
-    FILE *f_etudiants = fopen("etudiants.csv", "r");
+    FILE *f_etudiants = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (!f_etudiants) {
         printf("Erreur: Impossible d'ouvrir le fichier des etudiants!\n");
         return;
@@ -262,7 +262,7 @@ void afficher_note_etudiant_matiere() {
     
     // Récupérer les infos étudiant
     int etudiant_trouve = 0;
-    FILE *f_etud = fopen("etudiants.csv", "r");
+    FILE *f_etud = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (f_etud) {
         while(fscanf(f_etud, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
@@ -440,7 +440,7 @@ void afficher_note_etudiant_toutes_matieres() {
     printf("Numero etudiant: ");
     scanf("%d", &numero);
     
-    FILE *f_etud = fopen("etudiants.csv", "r");
+    FILE *f_etud = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (f_etud) {
         while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
@@ -530,7 +530,7 @@ void ajouter_note_etudiant_toutes_matieres() {
     printf("Numero etudiant: ");
     scanf("%d", &numero);
 
-    FILE *f_etud = fopen("etudiants.csv", "r");
+    FILE *f_etud = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (f_etud) {
         while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
@@ -623,7 +623,7 @@ void ajouter_note_classe_matiere() {
         return;
     }
     
-    FILE *f_etudiants = fopen("etudiants.csv", "r");
+    FILE *f_etudiants = fopen("gestion_etudiants/file_etudiant.csv", "r");
     FILE *f_notes = fopen(FICHIER_ETRE_NOTE, "a");
     
     if (!f_etudiants || !f_notes) {
