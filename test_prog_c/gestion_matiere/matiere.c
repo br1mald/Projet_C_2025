@@ -39,7 +39,7 @@ int gestion_matiere()
         case 6: printf("Retour au menu principal... \n"); return 1;
         case 7: printf("Au revoir!\n"); return 0;
         default :  printf("Veuillez choisir parmi les options du sous menu matiere !");
-                goto matiere_menu; 
+                goto matiere_menu;
     }
     return 2;
 }
@@ -57,7 +57,7 @@ static int reference_existe(int x)
         if (x == reference)
         {
             fclose(fichier_matiere);
-            return 1;    
+            return 1;
         }
     }
     fclose(fichier_matiere);
@@ -68,13 +68,13 @@ void ajouter_matiere()
 {
     int n,i;
     do
-    { 
+    {
     printf("Combien de matiere souhaiter vous ajouter : ");
     scanf("%d", &n);
     }while(n <= 0);
 
     for(i = 1; i <= n; i++)
-    { 
+    {
         printf("\t\tDonner une reference de la matiere : ");
         scanf("%d", &matiere_ajouter.reference);
 
@@ -93,19 +93,19 @@ void ajouter_matiere()
 
         FILE *matiere = fopen("gestion_matiere/matiere.csv","a");
 
-        
+
         if (matiere == NULL)
-        { 
+        {
             printf("Erreur d'ouverture du fichier matiere");
             exit(1);
         }
 
-        fprintf(matiere, "%d  %s  %hd \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+        fprintf(matiere, "%d  %s  %d \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
 
         fclose(matiere);
         printf("Ajout reussi\n");
     }
-    
+
 }
 
 
@@ -115,13 +115,13 @@ void modifier_matiere()
     int numeroEnreg;
     int n,i;
     do
-    { 
+    {
         printf("Combien de matiere souhaiter vous modifier : ");
         scanf("%d", &n);
     }while(n <= 0);
-    
+
     for(i = 1; i <= n; i++)
-    { 
+    {
         printf("Numero de l'enregistrement a modifier : ");
         scanf("%d", &numeroEnreg);
 
@@ -130,16 +130,17 @@ void modifier_matiere()
 
 
         if( matiere == NULL || temp == NULL )
-        { 
+        {
             printf("Suite a un probleme, le programme a ete arrete\n");
             exit(1);
         }
 
         if(reference_existe(numeroEnreg) == 1)
-        {    
+        {
             while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
             {
-                
+
+
                 if(reference_existe(numeroEnreg == matiere_ajouter.reference))
                 {
                     printf("Entrez le nouveau libelle : ");
@@ -147,9 +148,8 @@ void modifier_matiere()
                     printf("Entrez le nouveau coefficient : ");
                     scanf("%hd", &matiere_ajouter.coefficient);
                 }
-                fprintf(temp,"%d %s %hd \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
             }
-            
+
         }
         else
         {
@@ -171,16 +171,16 @@ int rechercher_matiere(int reference_rechercher)
     FILE *Fichier = fopen("gestion_matiere/matiere.csv","r");
 
     do
-    {  
+    {
         fscanf(Fichier,"%d  %s  %hd ", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient);
         if(matiere_ajouter.reference == reference_rechercher)
         {
             fclose(Fichier);
             return 1;
-        }    
+        }
 
     }while(!feof(Fichier));
-    
+
     fclose(Fichier);
     return 0;
 }
@@ -192,10 +192,10 @@ void supprimer_matiere()
     int reference_a_supp;
     int n,i;
     do
-    { 
+    {
         printf("Combien de matiere souhaiter vous modifier : ");
         scanf("%d", &n);
-    }while(n <= 0); 
+    }while(n <= 0);
 
     for(i = 1; i <= n; i++)
     {
@@ -222,7 +222,7 @@ void supprimer_matiere()
             }
             else
             {
-                fprintf(temp, "%d  %s  %hd\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+                fprintf(temp, "%d  %s  %d\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
             }
         }
         fclose(temp);
@@ -236,7 +236,7 @@ void supprimer_matiere()
             printf("ERREUR DE RENOMMAGE\n");
         else
             printf("RENOMMAGE REUSSIE\n");
-            
+
         printf("Matiere supprimee avec succes.\n");
     }
 }
@@ -244,7 +244,7 @@ void supprimer_matiere()
 
 void afficher_matiere()
 {
-    
+
         FILE *matiere = fopen("gestion_matiere/matiere.csv","r");
 
         if(matiere == NULL)
@@ -252,7 +252,7 @@ void afficher_matiere()
             printf("Suite a un probleme, le programme a ete arrete\n");
             exit(1);
         }
-            
+
 
         printf("\t+-----------+-----------------+-------------+\n");
         printf("\t| Reference |     libelle     | coefficient |\n");
@@ -266,5 +266,3 @@ void afficher_matiere()
 
         fclose(matiere);
 }
-
-

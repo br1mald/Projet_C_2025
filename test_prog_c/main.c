@@ -4,7 +4,7 @@
 #include "gestion_notes/etre_note.h"
 #include "gestion_etudiants/Etudiant.h"
 #include "gestion_matiere/matiere.h"
-#include "gestion_des_classes/gestion_classes.h"
+#include "gestion_classes/gestion_classes.h"
 
 
 int main()
@@ -20,7 +20,7 @@ int main()
     FILE *writer = fopen("gestion_des_classes/classes.csv", "w");
 
     while(strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0)
-    { 
+    {
         princ_menu: printf("\n\n \tBienvenue dans notre programme");
         printf("\n\n******************************Menu*********************************************\n\n");
         printf(" 1. Gestion des Etudiant \n 2. Gestion des classes \n 3. Gestion des matieres \n 4. Gestion des notes\n 5. Quitter \n");
@@ -30,7 +30,7 @@ int main()
 
         switch(optionMenuPrincipal)
         {
-            case 1: 
+            case 1:
                 while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
                     returnValue = sous_menu_etudiant();
                     if (returnValue == 1) {
@@ -42,7 +42,7 @@ int main()
                         scanf("%s", continuer);
                     }
                 } break;
-            case 2: 
+            case 2:
                 returnValue = gestion_classes();
                 if (returnValue == 1) {
                         goto princ_menu ; // Retourne au menu principal
@@ -50,7 +50,7 @@ int main()
                         exit(0);
                     }
                 break;
-            case 3: 
+            case 3:
                 while(strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
                     returnValue = gestion_matiere();
                     if (returnValue == 1) {
@@ -61,9 +61,9 @@ int main()
                             printf("Souhaitez-vous continuer dans le sous-menu Matiere? (oui/non): ");
                             scanf("%s", continuer);
                         }
-                    }   
+                    }
                 break;
-            case 4:  
+            case 4:
                 while(strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
                     returnValue = gestion_notes();
                     if (returnValue == 1) {
@@ -79,10 +79,10 @@ int main()
             case 5: printf("A la prochaine fois\n");
                 exit(0);
             default: printf("Veuillez choisir parmi les options du menu principal\n");
-                goto princ_menu; 
+                goto princ_menu;
         }
         printf("\nSouhaitez-vous continuer dans le menu principal? (oui/non): ");
-        scanf("%s", continuer);                
+        scanf("%s", continuer);
     }
     fclose(writer);
     return 0;
