@@ -103,10 +103,10 @@ void ajouter_note_etudiant_matiere() {
         matiere_existe = 0;
         printf("Entrer la Reference de la matiere: ");
         scanf("%d", &note.reference);
-        
+
         FILE *f_matieres = fopen("gestion_matiere/matiere.csv", "r");
         if (f_matieres) {
-            while(fscanf(f_matieres, "%d %s %d\n", 
+            while(fscanf(f_matieres, "%d %s %hd\n", 
                         &matiere.reference, matiere.libelle, 
                         &matiere.coefficient) != EOF) {
                 if (matiere.reference == note.reference) {
@@ -116,12 +116,16 @@ void ajouter_note_etudiant_matiere() {
             }
             fclose(f_matieres);
         }
-        
+
         if (!matiere_existe) {
             printf("Erreur: Matiere inexistante!\n");
             printf("Voulez-vous resaisir? (o/n): ");
             scanf(" %c", &choix);
-            if (choix != 'o' && choix != 'O') return;
+            if (choix == 'o' || choix == 'O') {
+                continue;
+            } else {
+                return;
+            }
         }
     } while (!matiere_existe);
     
@@ -171,7 +175,7 @@ void afficher_note_classe_matiere() {
     char libelle_matiere[100] = "Inconnu";
     int coefficient = 0;
     if (f_matieres) {
-        while(fscanf(f_matieres, "%d %s %d \n", 
+        while(fscanf(f_matieres, "%d %s %hd \n", 
                     &matiere.reference, matiere.libelle, 
                     &matiere.coefficient) != EOF) {
             if (matiere.reference == reference) {
@@ -191,15 +195,15 @@ void afficher_note_classe_matiere() {
     printf("+------+-------------------------+----------+----------+------------+\n");
     
     // Parcourir les étudiants de la classe
-    FILE *f_etudiants = fopen("etudiants.csv", "r");
+    FILE *f_etudiants = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (!f_etudiants) {
         printf("Erreur: Impossible d'ouvrir le fichier des etudiants!\n");
         return;
     }
     
-    while(fscanf(f_etudiants, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+    while(fscanf(f_etudiants, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, etudiant.email, 
                 &etudiant.code) != EOF) {
         if (etudiant.code == code_classe) {
             // Chercher les notes de cet étudiant
@@ -262,11 +266,11 @@ void afficher_note_etudiant_matiere() {
     
     // Récupérer les infos étudiant
     int etudiant_trouve = 0;
-    FILE *f_etud = fopen("etudiants.csv", "r");
+    FILE *f_etud = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (f_etud) {
-        while(fscanf(f_etud, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+        while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, etudiant.email, 
                 &etudiant.code) != EOF) {
             if (etudiant.numero == numero) {
                 etudiant_trouve = 1;
@@ -280,7 +284,7 @@ void afficher_note_etudiant_matiere() {
     char libelle_matiere[100] = "Inconnu";
     FILE *f_mat = fopen("gestion_matiere/matiere.csv", "r");
     if (f_mat) {
-        while(fscanf(f_mat, "%d %s %d \n", 
+        while(fscanf(f_mat, "%d %s %hd \n", 
                     &matiere.reference, matiere.libelle, 
                     &matiere.coefficient) != EOF) {
             if (matiere.reference == reference) {
@@ -440,11 +444,11 @@ void afficher_note_etudiant_toutes_matieres() {
     printf("Numero etudiant: ");
     scanf("%d", &numero);
     
-    FILE *f_etud = fopen("etudiants.csv", "r");
+    FILE *f_etud = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (f_etud) {
-        while(fscanf(f_etud, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+        while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, etudiant.email, 
                 &etudiant.code) != EOF) {
             if (etudiant.numero == numero) {
                 etudiant_trouve = 1;
@@ -481,7 +485,7 @@ void afficher_note_etudiant_toutes_matieres() {
             char libelle[100] = "Inconnu";
             int coefficient = 0;
             if (f_mat) {
-                while(fscanf(f_mat, "%d %s %d \n", 
+                while(fscanf(f_mat, "%d %s %hd \n", 
                             &matiere.reference, matiere.libelle, 
                             &matiere.coefficient) != EOF) {
                     if (matiere.reference == en.reference) {
@@ -530,11 +534,11 @@ void ajouter_note_etudiant_toutes_matieres() {
     printf("Numero etudiant: ");
     scanf("%d", &numero);
 
-    FILE *f_etud = fopen("etudiants.csv", "r");
+    FILE *f_etud = fopen("gestion_etudiants/file_etudiant.csv", "r");
     if (f_etud) {
-        while(fscanf(f_etud, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+        while(fscanf(f_etud, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, etudiant.email, 
                 &etudiant.code ) != EOF) {
             if (etudiant.numero == numero) {
                 etudiant_trouve = 1;
@@ -561,7 +565,7 @@ void ajouter_note_etudiant_toutes_matieres() {
 
     printf("\nSaisie des notes pour %s %s\n", etudiant.prenom, etudiant.nom);
 
-    while(fscanf(f_mat, "%d %s %d \n", 
+    while(fscanf(f_mat, "%d %s %hd \n", 
                 &matiere.reference, matiere.libelle, 
                 &matiere.coefficient) != EOF) {
         if (matiere_associee_classe(matiere.reference, etudiant.code)) {
@@ -606,7 +610,7 @@ void ajouter_note_classe_matiere() {
 
     FILE *f_matieres = fopen("gestion_matiere/matiere.csv", "r");
     if (f_matieres) {
-        while(fscanf(f_matieres, "%d %s %d \n", 
+        while(fscanf(f_matieres, "%d %s %hd \n", 
                     &matiere.reference, matiere.libelle, 
                     &matiere.coefficient) != EOF) {
             if (matiere.reference == reference && 
@@ -623,7 +627,7 @@ void ajouter_note_classe_matiere() {
         return;
     }
     
-    FILE *f_etudiants = fopen("etudiants.csv", "r");
+    FILE *f_etudiants = fopen("gestion_etudiants/file_etudiant.csv", "r");
     FILE *f_notes = fopen(FICHIER_ETRE_NOTE, "a");
     
     if (!f_etudiants || !f_notes) {
@@ -635,9 +639,9 @@ void ajouter_note_classe_matiere() {
     
     printf("\nSaisie des notes pour la classe %d en %s\n", code_classe, matiere.libelle);
     
-    while(fscanf(f_etudiants, "%s, %s, %d, %d/%d/%d, %s, %d\n", 
+    while(fscanf(f_etudiants, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d\n", 
                 etudiant.prenom, etudiant.nom, &etudiant.numero, 
-                 etudiant.date_naissance,etudiant.email, 
+                &etudiant.date_naissance.jour, &etudiant.date_naissance.mois, &etudiant.date_naissance.annee, etudiant.email, 
                 &etudiant.code) != EOF) {
         if (etudiant.code == code_classe) {
             printf("\nEtudiant: %s %s\n", etudiant.prenom, etudiant.nom);

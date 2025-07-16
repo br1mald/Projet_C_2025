@@ -87,9 +87,9 @@ void ajouter_matiere()
             retour_fonction_ref_existe = reference_existe(matiere_ajouter.reference);
         }
         printf("\n\t\tDonner le libelle de la matiere : ");
-        scanf("%s", &matiere_ajouter.libelle);
+        scanf("%s", matiere_ajouter.libelle);
         printf("\n\t\tDonner le coefficient de la matiere :");
-        scanf("%d", &matiere_ajouter.coefficient);
+        scanf("%hd", &matiere_ajouter.coefficient);
 
         FILE *matiere = fopen("gestion_matiere/matiere.csv","a");
 
@@ -100,7 +100,7 @@ void ajouter_matiere()
             exit(1);
         }
 
-        fprintf(matiere, "%d  %s  %d \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+        fprintf(matiere, "%d  %s  %hd \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
 
         fclose(matiere);
         printf("Ajout reussi\n");
@@ -137,7 +137,7 @@ void modifier_matiere()
 
         if(reference_existe(numeroEnreg) == 1)
         {    
-            while(fscanf(matiere,"%d %s %d \n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
+            while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
             {
                 
                 if(reference_existe(numeroEnreg == matiere_ajouter.reference))
@@ -145,9 +145,9 @@ void modifier_matiere()
                     printf("Entrez le nouveau libelle : ");
                     scanf("%s", matiere_ajouter.libelle);
                     printf("Entrez le nouveau coefficient : ");
-                    scanf("%d", &matiere_ajouter.coefficient);
+                    scanf("%hd", &matiere_ajouter.coefficient);
                 }
-                fprintf(temp,"%d %s %d \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+                fprintf(temp,"%d %s %hd \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
             }
             
         }
@@ -172,7 +172,7 @@ int rechercher_matiere(int reference_rechercher)
 
     do
     {  
-        fscanf(Fichier,"%d  %s  %d ", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient);
+        fscanf(Fichier,"%d  %s  %hd ", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient);
         if(matiere_ajouter.reference == reference_rechercher)
         {
             fclose(Fichier);
@@ -214,7 +214,7 @@ void supprimer_matiere()
             exit(1);
         }
 
-        while(fscanf(fichier, " %d  %s  %d\n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
+        while(fscanf(fichier, " %d  %s  %hd\n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
         {
             if(matiere_ajouter.reference == reference_a_supp)
             {
@@ -222,7 +222,7 @@ void supprimer_matiere()
             }
             else
             {
-                fprintf(temp, "%d  %s  %d\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
+                fprintf(temp, "%d  %s  %hd\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
             }
         }
         fclose(temp);
@@ -258,9 +258,9 @@ void afficher_matiere()
         printf("\t| Reference |     libelle     | coefficient |\n");
         printf("\t+-----------+-----------------+-------------+\n");
 
-        while(fscanf(matiere,"%d %s %d \n", &matiere_ajouter.reference,matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
+        while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference,matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
         {
-            printf("\t| %9d | %15s | %11d |\n", matiere_ajouter.reference,matiere_ajouter.libelle, matiere_ajouter.coefficient);
+            printf("\t| %9d | %15s | %11hd |\n", matiere_ajouter.reference,matiere_ajouter.libelle, matiere_ajouter.coefficient);
             printf("\t+-----------+-----------------+-------------+\n");
         }
 
