@@ -52,17 +52,18 @@ int gestion_matiere()
 }
 
 
+
 static int reference_existe(int x)
 {
     char libelle[15];
     int reference, coefficient;
-
-    FILE  *fichier_matiere = fopen ("gestion_matiere/matiere.csv", "r");
-
-    while (fscanf(fichier_matiere, "%d  %s  %d \n", &reference, libelle, &coefficient) != -1)
-    {
-        if (x == reference)
-        {
+    FILE *fichier_matiere = fopen("gestion_matiere/matiere.csv", "r");
+    if (fichier_matiere == NULL) {
+        // S'il n'existe pas, aucune référence ne peut exister
+        return 0;
+    }
+    while (fscanf(fichier_matiere, "%d  %s  %d", &reference, libelle, &coefficient) == 3) {
+        if (x == reference) {
             fclose(fichier_matiere);
             return 1;
         }

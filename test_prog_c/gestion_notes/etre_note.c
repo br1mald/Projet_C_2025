@@ -74,6 +74,7 @@ void ajouter_note_etudiant_matiere() {
     Etre_note note;
     Etudiant etudiant;
     matiere matiere;
+    int code;
     int etudiant_existe = 0, matiere_existe = 0;
     char choix;
 
@@ -133,15 +134,32 @@ void ajouter_note_etudiant_matiere() {
             }
         }
     } while (!matiere_existe);
-
+     
     if (!matiere_associee_classe(note.reference, etudiant.code)) {
         printf("Erreur: Cette matiere n'est pas associee a la classe de l'etudiant!\n");
         return;
     }
 
+    // Vérification de l'existence d'une note pour ce couple
+    int existe_deja = 0;
+    FILE *f_notes_tmp = fopen(FICHIER_ETRE_NOTE, "r");
+    if (f_notes_tmp) {
+        int num_tmp, ref_tmp;
+        float CC_tmp, DS_tmp;
+        while (fscanf(f_notes_tmp, "%d,%d,%f,%f\n", &num_tmp, &ref_tmp, &CC_tmp, &DS_tmp) == 4) {
+            if (num_tmp == note.numero && ref_tmp == note.reference) {
+                existe_deja = 1;
+                break;
+            }
+        }
+        fclose(f_notes_tmp);
+    }
+    if (existe_deja) {
+        printf("Erreur : une note existe déjà pour cet étudiant et cette matière.\n");
+        return;
+    }
     note.noteCC = saisir_note_valide("Note CC");
     note.noteDS = saisir_note_valide("Note DS");
-
     FILE *f_notes = fopen(FICHIER_ETRE_NOTE, "a");
     if (f_notes) {
         fprintf(f_notes, "%d,%d,%.2f,%.2f\n",
@@ -196,7 +214,7 @@ void afficher_note_classe_matiere() {
 
     // En-tête du tableau
     printf("+------+-------------------------+----------+----------+------------+\n");
-    printf("| ID   | Nom Prenom              | Note CC  | Note DS  | Moyenne    |\n");
+    printf("| ID   |  Prenom    Nom          | Note CC  | Note DS  | Moyenne    |\n");
     printf("+------+-------------------------+----------+----------+------------+\n");
 
     // Parcourir les étudiants de la classe
@@ -235,7 +253,7 @@ void afficher_note_classe_matiere() {
             }
 
             if (!etudiant_trouve) {
-                printf("| %-4d | %-6s %-15s | %-8s | %-8s | %-10s |\n",
+                printf("| %-4d | %-6s %7s |  %-7s | %-8s | %-10s |\n",
                        etudiant.numero, etudiant.prenom, etudiant.nom,
                        "N/A", "N/A", "N/A");
             }
@@ -247,8 +265,8 @@ void afficher_note_classe_matiere() {
     printf("+------+-------------------------+----------+----------+------------+\n");
 
     if (trouve) {
-        printf("| Moyenne classe: %-36.2f |\n", moyenne_classe / nb_etudiants);
-        printf("+-------------------------------------------------------------+\n");
+        printf("| Moyenne classe: %-36.2f              |\n", moyenne_classe / nb_etudiants);
+        printf("+-------------------------------------------------------------------+\n");
     } else {
         printf("| Aucune note trouvee pour cette classe et cette matiere      |\n");
         printf("+-------------------------------------------------------------+\n");
@@ -319,11 +337,25 @@ void afficher_note_etudiant_matiere() {
                  &en.numero, &en.reference,
                  &en.noteCC, &en.noteDS) != EOF) {
         if (en.numero == numero && en.reference == reference) {
+            // Recherche du coefficient à chaque note
+            int coeff = 0;
+            FILE *f_mat = fopen("gestion_matiere/matiere.csv", "r");
+            if (f_mat) {
+                int ref_tmp;
+                char libelle_tmp[100];
+                int coeff_tmp;
+                while(fscanf(f_mat, "%d %s %d", &ref_tmp, libelle_tmp, &coeff_tmp) == 3) {
+                    if (ref_tmp == reference) {
+                        coeff = coeff_tmp;
+                        break;
+                    }
+                }
+                fclose(f_mat);
+            }
             float moyenne = calculer_moyenne(en.noteCC, en.noteDS);
             printf("| %-8.2f | %-8.2f | %-10.2f | %-7d |\n",
-                   en.noteCC, en.noteDS, moyenne, matiere.coefficient);
+                   en.noteCC, en.noteDS, moyenne, coeff);
             trouve = 1;
-            break;
         }
     }
 
@@ -518,12 +550,12 @@ void afficher_note_etudiant_toutes_matieres() {
 
     if (trouve) {
         if (nb_matieres > 0) {
-            printf("| Moyenne generale: %-40.2f |\n", moyenne_generale / nb_matieres);
-            printf("+---------------------------------------------------------------+\n");
+            printf("| Moyenne generale: %-40.2f             |\n", moyenne_generale / nb_matieres);
+            printf("+------------------------------------------------------------------------+\n");
         }
     } else {
-        printf("| Aucune note trouvee pour cet etudiant                            |\n");
-        printf("+-------------------------------------------------------------------+\n");
+        printf("| Aucune note trouvee pour cet etudiant                              |\n");
+        printf("+---------------------------------------------------------------------+\n");
     }
 }
 
