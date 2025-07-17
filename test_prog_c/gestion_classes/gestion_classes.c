@@ -122,8 +122,10 @@ int gestion_classes(){
                 printf("Veuillez saisir le code de la classe dont vous souhaitez consulter les matières: \n");
                 scanf("%d", &code);
                 pos = search(classes, code, size);
-                printf("Liste des matières de la classe %s: \n", classes[pos].nom);
-                afficher_matieres_classe(code);
+                if (pos != -1) {
+                    printf("Liste des matières de la classe %s: \n", classes[pos].nom);
+                    afficher_matieres_classe(code);
+                } else printf("Classe introuvable\n");
                 break;
             case 9:
                 printf("Retour au menu principal\n");
