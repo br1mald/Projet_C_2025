@@ -9,6 +9,8 @@ int gestion_classes(){
     Classe classes[50];
     int choice, nombre, target, pos, code, reference;
     char continuer[5] = "oui", level[10];
+    int buffer_code;
+    char buffer_nom[15], buffer_niveau[15];
 
     FILE *writer = fopen("gestion_classes/classes.csv", "a");
     FILE *se_faire = fopen("gestion_classes/se_faire.csv", "a");
@@ -67,12 +69,22 @@ int gestion_classes(){
             case 4:
                 if (size > 0){
                     printf("Affichage des classes\n");
+
+                    printf("\t+------+------------+-------------+\n");
+                    printf("\t| Code |        Nom |     Niveau  |\n");
+                    printf("\t+------+------------+-------------+\n");
+
                     FILE *reader = fopen("gestion_classes/classes.csv", "r");
                     char buffer[255];
                     for (int i = 0; i < size; i++){
                         fgets(buffer, 255, reader);
-                        printf("%s", buffer);
+                        int line = sscanf(buffer, "%d,%[^,],%[^\n]", &buffer_code, buffer_nom, buffer_niveau);
+                        // printf("%s", buffer);
+                        printf("\t| %4d | %10s | %11s |\n", buffer_code, buffer_nom, buffer_niveau);
                     }
+
+                    printf("\t+------+------------+-------------+\n");
+
                 } else printf("Aucune classe à afficher\n");
                 break;
             case 5:

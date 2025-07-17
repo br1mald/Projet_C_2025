@@ -26,7 +26,7 @@ int gestion_matiere()
                 printf("Donnez la reference de la matiere a rechercher : ");
                 scanf("%d", &reference);
                 if(rechercher_matiere(reference))
-                    printf(" Reference : %d \n Libelle : %s \n Coefficient : %d", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
+                    printf(" Reference : %d \n Libelle : %s \n Coefficient : %d\n", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
                 else
                     printf("L'element est absent dans la liste des matieres.\n");
             break;
@@ -137,17 +137,26 @@ void modifier_matiere()
 
         if(reference_existe(numeroEnreg) == 1)
         {
+            int choice;
             while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference, matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
             {
 
 
-                if(reference_existe(numeroEnreg == matiere_ajouter.reference))
+                if(numeroEnreg == matiere_ajouter.reference)
                 {
-                    printf("Entrez le nouveau libelle : ");
-                    scanf("%s", matiere_ajouter.libelle);
-                    printf("Entrez le nouveau coefficient : ");
-                    scanf("%hd", &matiere_ajouter.coefficient);
+                    printf("Veuillez saisir l'élément à modifier:\n1. Libellé\n2. Coefficient\n");
+                    scanf("%d", &choice);
+                    switch (choice){
+                        case 1:
+                            printf("Entrez le nouveau libelle : ");
+                            scanf("%s", matiere_ajouter.libelle);
+                            break;
+                        case 2:
+                            printf("Entrez le nouveau coefficient : ");
+                            scanf("%hd", &matiere_ajouter.coefficient);
+                    }
                 }
+                fprintf(temp,"%d %s %hd \n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
             }
 
         }
@@ -255,14 +264,14 @@ void afficher_matiere()
 
 
         printf("\t+-----------+-----------------+-------------+\n");
-        printf("\t| Reference |     libelle     | coefficient |\n");
+        printf("\t| Reference |     Libelle     | Coefficient |\n");
         printf("\t+-----------+-----------------+-------------+\n");
 
-        while(fscanf(matiere,"%d %s %hd \n", &matiere_ajouter.reference,matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
+        while(fscanf(matiere,"%d  %s  %hd \n", &matiere_ajouter.reference,matiere_ajouter.libelle, &matiere_ajouter.coefficient) != EOF)
         {
             printf("\t| %9d | %15s | %11hd |\n", matiere_ajouter.reference,matiere_ajouter.libelle, matiere_ajouter.coefficient);
-            printf("\t+-----------+-----------------+-------------+\n");
         }
+        printf("\t+-----------+-----------------+-------------+\n");
 
         fclose(matiere);
 }
