@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include "../relations.h"
+#include "se_faire.h"
 
 int gestion_classes(){
+
     Se_faire tab_associations[255];
     int se_faire_size = 0;
     int size = 0;
