@@ -5,7 +5,7 @@
 #include "../gestion_matiere/matiere.h"
 #include "../gestion_classes/gestion_classes.h"
 #include "../gestion_etudiants/Etudiant.h"
-#define FICHIER_ETRE_NOTE "etre_note.csv"
+#define FICHIER_ETRE_NOTE "gestion_notes/etre_note.csv"
 #define NOTE_MIN 0.0f
 #define NOTE_MAX 20.0f
 
@@ -664,13 +664,13 @@ void ajouter_note_classe_matiere() {
 }
 
 int matiere_associee_classe(int ref_matiere, int code_classe) {
-    FILE *f = fopen("matiere_classe.csv", "r");
+    FILE *f = fopen("gestion_classes/se_faire.csv", "r");
     if (!f) return 0;
 
     int ref, code;
     int trouve = 0;
 
-    while (fscanf(f, "%d,%d\n", &ref, &code) == 2) {
+    while (fscanf(f, "%d,%d\n", &code, &ref) == 2) {
         if (ref == ref_matiere && code == code_classe) {
             trouve = 1;
             break;

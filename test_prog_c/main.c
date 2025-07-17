@@ -31,6 +31,7 @@ int main()
         switch(optionMenuPrincipal)
         {
             case 1:
+                system("cls");
                 while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
                     returnValue = sous_menu_etudiant();
                     if (returnValue == 1) {

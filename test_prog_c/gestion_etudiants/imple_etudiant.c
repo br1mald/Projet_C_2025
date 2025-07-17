@@ -31,7 +31,7 @@ int sous_menu_etudiant(){
             case 7: printf("Au revoir!\n");
                     return 0; // Quitte le programme
             default: printf("Veuillez choisir parmi les options du sous menu Etudiant\n");
-            goto etu_menu; 
+            goto etu_menu;
         }
     return 2; // Continue dans le sous-menu Etudiant
 }
@@ -54,6 +54,10 @@ int ajou_etudiant() {
 
     printf("Numero : ");
     scanf("%d", &etu.numero);
+    while (check_numero(etu.numero) == 1) {
+        printf("Erreur: Le numero %d existe deja, ressaisir un numero valide : ", etu.numero);
+        scanf("%d", &etu.numero);
+    }
 
     printf("Date de Naissance : \n");
     printf("Jour de Naissance : ");
@@ -68,6 +72,11 @@ int ajou_etudiant() {
 
     printf("Code : ");
     scanf("%d", &etu.code);
+    int retour_code_existe = code_existe(etu.code);
+    while (retour_code_existe == 0) {
+        printf("Erreur: Le code %d ne correspond à aucune classes, ressaisir un code valide : ", etu.code);
+        scanf("%d", &etu.code);
+    }
 
 
     if (fprintf(fichier, "%s, %s, %d, %d/%d/%d, %s, %d\n", etu.prenom, etu.nom, etu.numero, etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee, etu.email, etu.code) < 0) {
@@ -81,7 +90,41 @@ int ajou_etudiant() {
     return 0;
 }
 
+int check_numero(int value){
+    int numero;
+    Etudiant etu;
+    FILE *fichier = fopen("gestion_etudiants/file_etudiant.csv", "r");
+    while (fscanf(fichier, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d",
+    etu.prenom, etu.nom, &etu.numero, &etu.date_naissance.jour, &etu.date_naissance.mois, &etu.date_naissance.annee, etu.email, &etu.code) == 8)
+    {
+        if (value == etu.numero)
+        {
+            fclose(fichier);
+            return 1;
+        }
+    }
+    fclose(fichier);
+    return 0;
+}
 
+int code_existe(int x)
+{
+    char niveau[15], nom[15];
+    int code;
+
+    FILE  *fichier_matiere = fopen ("gestion_classes/classes.csv", "r");
+
+    while (fscanf(fichier_matiere, "%d,%[^,],%[^\n]", &code, nom, niveau) != -1)
+    {
+        if (x == code)
+        {
+            fclose(fichier_matiere);
+            return 1;
+        }
+    }
+    fclose(fichier_matiere);
+    return 0;
+}
 
 int modif_etudiant(){
      int numero, trouve = 0;
@@ -103,30 +146,49 @@ int modif_etudiant(){
 
     Etudiant etu;
     char ligne[256];
+    int choice;
     while (fgets(ligne, sizeof(ligne), fichier)) {
         // le format est : prenom, nom, numero, jj/mm/aaaa, email, code
         if (sscanf(ligne, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d",
                    etu.prenom, etu.nom, &etu.numero,
                    &etu.date_naissance.jour, &etu.date_naissance.mois, &etu.date_naissance.annee,
                    etu.email, &etu.code) == 8) {
-            if (etu.numero == numero) {
-                trouve = 1;
-                printf("Modification de l'etudiant %s %s\n", etu.prenom, etu.nom);
-                printf("Nouveau prenom : ");
-                scanf("%s", etu.prenom);
-                printf("Nouveau nom : ");
-                scanf("%s", etu.nom);
-                printf("Nouveau jour de naissance : ");
-                scanf("%d", &etu.date_naissance.jour);
-                printf("Nouveau mois de naissance : ");
-                scanf("%d", &etu.date_naissance.mois);
-                printf("Nouvelle annee de naissance : ");
-                scanf("%d", &etu.date_naissance.annee);
-                printf("Nouvel email : ");
-                scanf("%s", etu.email);
-                printf("Nouveau code : ");
-                scanf("%d", &etu.code);
-            }
+                if (etu.numero == numero) {
+                    trouve = 1;
+                    printf("Modification de l'etudiant %s %s\n", etu.prenom, etu.nom);
+                    printf("Veuillez saisir le champ à modifier:\n1. Prénom\n2. Nom\n3. Jour de naissance\n4. Mois de naissance\n5. Année de naissance\n6. Email\n7. Code\n");
+                    scanf("%d", &choice);
+                    switch (choice) {
+                        case 1:
+                            printf("Nouveau prenom : ");
+                            scanf("%s", etu.prenom);
+                            break;
+                        case 2:
+                            printf("Nouveau nom : ");
+                            scanf("%s", etu.nom);
+                            break;
+                        case 3:
+                            printf("Nouveau jour de naissance : ");
+                            scanf("%d", &etu.date_naissance.jour);
+                            break;
+                        case 4:
+                            printf("Nouveau mois de naissance : ");
+                            scanf("%d", &etu.date_naissance.mois);
+                            break;
+                        case 5:
+                            printf("Nouvelle annee de naissance : ");
+                            scanf("%d", &etu.date_naissance.annee);
+                            break;
+                        case 6:
+                            printf("Nouvel email : ");
+                            scanf("%s", etu.email);
+                            break;
+                        case 7:
+                            printf("Nouveau code : ");
+                            scanf("%d", &etu.code);
+                            break;
+                    }
+                }
             fprintf(temp, "%s, %s, %d, %d/%d/%d, %s, %d\n",
                     etu.prenom, etu.nom, etu.numero,
                     etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee,
@@ -180,7 +242,7 @@ int suppr_etudiant(){
                 continue; // Ne pas ecrire cette ligne dans le fichier temporaire
             }
             fprintf(temp, "%s, %s, %d, %d/%d/%d, %s, %d\n",etu.prenom, etu.nom, etu.numero,
-            etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee,etu.email, etu.code);         
+            etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee,etu.email, etu.code);
         }
     }
     fclose(fichier);
@@ -207,11 +269,11 @@ int recherche_etudiant(){
     int numero;
     printf("Entrez le numero de l'etudiant a rechercher : ");
     scanf("%d", &numero);
-    
+
     Etudiant etu;
     char ligne[256];
     int trouve = 0;
-    
+
     while (fgets(ligne, sizeof(ligne), fichier) != NULL) {
         // Supposons que le format est : prenom, nom, numero, jj/mm/aaaa, email, code
         if (sscanf(ligne, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d",
@@ -220,22 +282,24 @@ int recherche_etudiant(){
                    etu.email, &etu.code) == 8) {
             if (etu.numero == numero) {
                 trouve = 1;
-                printf("| %-12s | %-12s | %-8s | %-12s | %-25s | %-8s |\n", 
+                printf("+--------------+--------------+----------+--------------+---------------------------+----------+\n");
+                printf("| %-12s | %-12s | %-8s | %-12s | %-25s | %-8s |\n",
                 "Prenom", "Nom", "Numero", "Naissance", "Email", "Code");
-                printf("|--------------|--------------|----------|--------------|---------------------------|----------|\n");
+                printf("+--------------+--------------+----------+--------------+---------------------------+----------+\n");
                 printf("| %-12s | %-12s | %-8d | %02d/%02d/%04d   | %-25s | %-8d |\n",
                    etu.prenom, etu.nom, etu.numero,
                    etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee,
                    etu.email, etu.code);
+                printf("+--------------+--------------+----------+--------------+---------------------------+----------+\n");
                 break;
             }
         }
     }
-    
+
     if (trouve == 0) {
         printf("Aucun etudiant trouve avec le numero %d.\n", numero);
     }
-    
+
     fclose(fichier);
     printf("Recherche terminee.\n");
     return 0;
@@ -252,9 +316,10 @@ int liste_etudiant(){
     Etudiant etu;
     char ligne[256];
     printf("=== Liste des etudiants ===\n");
-    printf("| %-12s | %-12s | %-8s | %-12s | %-25s | %-8s |\n", 
+    printf("+--------------+--------------+----------+--------------+---------------------------+----------+\n");
+    printf("| %-12s | %-12s | %-8s | %-12s | %-25s | %-8s |\n",
            "Prenom", "Nom", "Numero", "Naissance", "Email", "Code");
-    printf("|--------------|--------------|----------|--------------|---------------------------|----------|\n");
+    printf("+--------------+--------------+----------+--------------+---------------------------+----------+\n");
     while (fgets(ligne, sizeof(ligne), fichier) != NULL) {
         if (sscanf(ligne, "%[^,], %[^,], %d, %d/%d/%d, %[^,], %d",
                    etu.prenom, etu.nom, &etu.numero,
@@ -266,6 +331,7 @@ int liste_etudiant(){
                    etu.email, etu.code);
         }
     }
+    printf("+--------------+--------------+----------+--------------+---------------------------+----------+\n");
     fclose(fichier);
     return 0;
 }
