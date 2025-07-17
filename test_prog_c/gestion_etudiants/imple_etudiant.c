@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include "Etudiant.h"
 #include <stdlib.h>
+#include <string.h>
 
-int sous_menu_etudiant(){
+int gestion_etudiants(){
+    char continuer[5] = "oui";
     int optionSousMenuEtudiant;
-        etu_menu :printf("\nGestion des Etudiants\n");
+    while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
+        etu_menu :printf("\nGestion des étudiants\n");
         printf("\t 1. Ajout Etudiant \n \t 2. Modification Etudiant \n \t 3. Recherche Etudiant \n \t 4. Affichage des Etudiants \n \t 5. Suppression Etudiant\n \t 6. Retour au menu principal \t 7.Quitter \n");
         printf("\nVeuillez choisir votre option du Sous Menu Etudiant : ");
         scanf("%d", &optionSousMenuEtudiant);
@@ -29,11 +32,15 @@ int sous_menu_etudiant(){
             case 6: printf("Retour au menu principal...\n");
                     return 1; // Retourne au menu principal
             case 7: printf("Au revoir!\n");
-                    return 0; // Quitte le programme
-            default: printf("Veuillez choisir parmi les options du sous menu Etudiant\n");
+                    exit(0); // Quitte le programme
+            default: printf("Veuillez choisir parmi les options du sous menu étudiants\n");
             goto etu_menu;
         }
-    return 2; // Continue dans le sous-menu Etudiant
+        printf("Souhaitez vous continuer dans le sous-menu Gestion des étudiants?\n");
+        scanf("%s", continuer);
+    }
+
+    return 1; // Continue dans le sous-menu Etudiant
 }
 
 

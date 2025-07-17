@@ -23,6 +23,6 @@ int modif_etudiant();
 int suppr_etudiant();
 int recherche_etudiant();
 int liste_etudiant();
-int sous_menu_etudiant();
+int gestion_etudiants();
 int code_existe(int x);
 int check_numero(int value);

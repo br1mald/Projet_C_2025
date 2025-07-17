@@ -11,38 +11,43 @@
 
 int gestion_notes()
 {
+    char continuer[5] = "oui";
     int option;
-    notes_menu: printf("\n=== GESTION DES NOTES ===\n");
-    printf("1. Ajouter note etudiant-matiere\n");
-    printf("2. Ajouter note etudiant-toutes matieres\n");
-    printf("3. Ajouter note classe-matiere\n");
-    printf("4. Modifier note\n");
-    printf("5. Supprimer note\n");
-    printf("6. Afficher note etudiant-matiere\n");
-    printf("7. Afficher note classe-matiere\n");
-    printf("8. Afficher note etudiant-toutes matieres\n");
-    printf("9. Retour au menu principal\n");
-    printf("10. Quitter le programme\n");
-    printf("\nVeuillez choisir une option du sous menu note: ");
-    scanf("%d", &option);
+    while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0) {
+        notes_menu: printf("\n=== GESTION DES NOTES ===\n");
+        printf("1. Ajouter note etudiant-matiere\n");
+        printf("2. Ajouter note etudiant-toutes matieres\n");
+        printf("3. Ajouter note classe-matiere\n");
+        printf("4. Modifier note\n");
+        printf("5. Supprimer note\n");
+        printf("6. Afficher note etudiant-matiere\n");
+        printf("7. Afficher note classe-matiere\n");
+        printf("8. Afficher note etudiant-toutes matieres\n");
+        printf("9. Retour au menu principal\n");
+        printf("10. Quitter le programme\n");
+        printf("\nVeuillez choisir une option du sous menu note: ");
+        scanf("%d", &option);
 
-    switch(option) {
-        case 1: ajouter_note_etudiant_matiere(); break;
-        case 2: ajouter_note_etudiant_toutes_matieres(); break;
-        case 3: ajouter_note_classe_matiere(); break;
-        case 4: modifier_note(); break;
-        case 5: supprimer_note(); break;
-        case 6: afficher_note_etudiant_matiere(); break;
-        case 7: afficher_note_classe_matiere(); break;
-        case 8: afficher_note_etudiant_toutes_matieres(); break;
-        case 9: printf("Retour au menu principal...\n");
-            return 1; // Retour au menu principal
-        case 10:
-            printf("Au revoir!\n");
-            return 0;
-        default: printf("Option invalide!\n"); goto notes_menu; // Retourne au menu des notes
+        switch(option) {
+            case 1: ajouter_note_etudiant_matiere(); break;
+            case 2: ajouter_note_etudiant_toutes_matieres(); break;
+            case 3: ajouter_note_classe_matiere(); break;
+            case 4: modifier_note(); break;
+            case 5: supprimer_note(); break;
+            case 6: afficher_note_etudiant_matiere(); break;
+            case 7: afficher_note_classe_matiere(); break;
+            case 8: afficher_note_etudiant_toutes_matieres(); break;
+            case 9: printf("Retour au menu principal...\n");
+                return 1; // Retour au menu principal
+            case 10:
+                printf("Au revoir!\n");
+                exit(0);
+            default: printf("Option invalide!\n"); goto notes_menu; // Retourne au menu des notes
+        }
+        printf("Souhaitez vous continuer dans le sous-menu Gestion des notes?\n");
+        scanf("%s", continuer);
     }
-    return 2;
+    return 1;
 }
 
 float calculer_moyenne(float noteCC, float noteDS) {

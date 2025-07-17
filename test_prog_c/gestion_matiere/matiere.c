@@ -1,47 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "matiere.h"
+#include <string.h>
 
 matiere matiere_ajouter;
 
 
 int gestion_matiere()
 {
+    char continuer[5] = "oui";
     int optionSousMenuMatiere;
 
     matiere_menu: printf("  \n\nGestion des matieres\n");
-    printf(" \t 1. Ajout matiere \n\t 2. Modification matiere \n\t 3. Recherche de matiere \n\t 4. Affichage des matieres \n\t 5. Suppression de matieres\n\t 6. Precedent \n\t 7. Quitter \n");
-    printf("\nVeuillez choisir votre option du sous menu matiere : ");
-    scanf("%d", &optionSousMenuMatiere);
-    switch(optionSousMenuMatiere)
-    {
-        case 1: printf("Ajouter une matiere\n");
-                ajouter_matiere();
-            break;
-        case 2: printf("Modifier une matiere\n");
-                modifier_matiere();
-            break;
-        case 3 : printf("Recherche une matiere\n");
-                int reference;
-                printf("Donnez la reference de la matiere a rechercher : ");
-                scanf("%d", &reference);
-                if(rechercher_matiere(reference))
-                    printf(" Reference : %d \n Libelle : %s \n Coefficient : %d\n", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
-                else
-                    printf("L'element est absent dans la liste des matieres.\n");
-            break;
-        case 4: printf("Voici la liste des matieres\n");
-                afficher_matiere();
-            break;
-        case 5: printf("Supprimer une matiere\n");
-                supprimer_matiere();
-            break;
-        case 6: printf("Retour au menu principal... \n"); return 1;
-        case 7: printf("Au revoir!\n"); return 0;
-        default :  printf("Veuillez choisir parmi les options du sous menu matiere !");
-                goto matiere_menu;
+    while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
+        printf(" \t 1. Ajout matiere \n\t 2. Modification matiere \n\t 3. Recherche de matiere \n\t 4. Affichage des matieres \n\t 5. Suppression de matieres\n\t 6. Precedent \n\t 7. Quitter \n");
+        printf("\nVeuillez choisir votre option du sous menu matiere : ");
+        scanf("%d", &optionSousMenuMatiere);
+        switch(optionSousMenuMatiere)
+        {
+            case 1: printf("Ajouter une matiere\n");
+                    ajouter_matiere();
+                break;
+            case 2: printf("Modifier une matiere\n");
+                    modifier_matiere();
+                break;
+            case 3 : printf("Recherche une matiere\n");
+                    int reference;
+                    printf("Donnez la reference de la matiere a rechercher : ");
+                    scanf("%d", &reference);
+                    if(rechercher_matiere(reference))
+                        printf(" Reference : %d \n Libelle : %s \n Coefficient : %d\n", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
+                    else
+                        printf("L'element est absent dans la liste des matieres.\n");
+                break;
+            case 4: printf("Voici la liste des matieres\n");
+                    afficher_matiere();
+                break;
+            case 5: printf("Supprimer une matiere\n");
+                    supprimer_matiere();
+                break;
+            case 6: printf("Retour au menu principal... \n"); return 1;
+            case 7: printf("Au revoir!\n"); exit(0);
+            default :  printf("Veuillez choisir parmi les options du sous menu matiere !");
+                    goto matiere_menu;
+        }
+        printf("Souhaitez vous continuer dans le sous-menu Gestion des matières?\n");
+        scanf("%s", continuer);
     }
-    return 2;
+
+    return 1;
 }
 
 

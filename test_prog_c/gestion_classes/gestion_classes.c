@@ -21,7 +21,7 @@ int gestion_classes(){
     initialize_se_faire(tab_associations, &se_faire_size);
 
     while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
-        printf("Voulez-vous: \n1. Ajouter une classe\n2. Supprimer une classe\n3. Modifier une classe\n4. Afficher la liste des classes\n5. Afficher les informations d'une classe\n6. Associer une classe à une matière\n7. Dissocier une classe et une matière\n8. Afficher la liste des matières enseignées dans une classe\n9. Retourner au menu précédent\n");
+        printf("Gestion des classes \n\t1. Ajouter une classe\n\t2. Supprimer une classe\n\t3. Modifier une classe\n\t4. Afficher la liste des classes\n\t5. Afficher les informations d'une classe\n\t6. Associer une classe à une matière\n\t7. Dissocier une classe et une matière\n\t8. Afficher la liste des matières enseignées dans une classe\n\t9. Retourner au menu précédent\t10. Quitter\n");
         scanf("%d", &choice);
         switch (choice){
             case 1:
@@ -73,7 +73,7 @@ int gestion_classes(){
                     printf("Affichage des classes\n");
 
                     printf("\t+------+------------+-------------+\n");
-                    printf("\t| Code |        Nom |     Niveau  |\n");
+                    printf("\t| Code |     Nom    |   Niveau    |\n");
                     printf("\t+------+------------+-------------+\n");
 
                     FILE *reader = fopen("gestion_classes/classes.csv", "r");
@@ -81,7 +81,6 @@ int gestion_classes(){
                     for (int i = 0; i < size; i++){
                         fgets(buffer, 255, reader);
                         int line = sscanf(buffer, "%d,%[^,],%[^\n]", &buffer_code, buffer_nom, buffer_niveau);
-                        // printf("%s", buffer);
                         printf("\t| %4d | %10s | %11s |\n", buffer_code, buffer_nom, buffer_niveau);
                     }
 
@@ -100,7 +99,11 @@ int gestion_classes(){
                 pos = search(classes, target, size);
                 if (classes[pos].niveau == Licence) strcpy(level, "Licence");
                 else if (classes[pos].niveau == Master) strcpy(level, "Master");
-                printf("Nom de la classe: %s, Code: %d, Niveau: %s\n", classes[pos].nom, classes[pos].code, level);
+                printf("\t+----------+--------+----------+\n");
+                printf("\t|    Nom   |  Code  |  Niveau  |\n");
+                printf("\t+----------+--------+----------+\n");
+                printf("\t|  %7s |  %3d   | %7s  |\n", classes[pos].nom, classes[pos].code, level);
+                printf("\t+----------+--------+----------+\n");
                 break;
             case 6:
                 printf("Menu d'association de classe-matière\n");
@@ -128,12 +131,15 @@ int gestion_classes(){
                 } else printf("Classe introuvable\n");
                 break;
             case 9:
-                printf("Retour au menu principal\n");
+                printf("Retour au menu principal\t");
                 return 1;
+            case 10:
+                printf("Au revoir!\n");
+                exit(0);
             default:
                 printf("Veuillez entrer le numéro de l'opération à réaliser\n");
         }
-    printf("Souhaitez vous continuer?\n");
+    printf("Souhaitez vous continuer dans le sous-menu Gestion des classes?\n");
     scanf("%s", continuer);
     }
     fclose(writer);
