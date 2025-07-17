@@ -64,22 +64,24 @@ void afficher_matieres_classe(int class_code) {
     FILE *associations = fopen("gestion_classes/se_faire.csv", "r");
 
     char mat_buffer[50], asso_buffer[50], mat_name[15];
-    int code, file_ref, ref;
+    int code, file_ref, ref, coeff;
 
-    printf("\t+------------+\n");
+    printf("\t+-------------+------------+---------------+\n");
+    printf("\t|  Référence  |   Matière  |  Coefficient  |\n");
+    printf("\t+-------------+------------+---------------+\n");
 
     while (fgets(asso_buffer, sizeof(asso_buffer), associations) != NULL) {
         int line = sscanf(asso_buffer, "%d,%d", &code, &ref);
         rewind(matieres);
         if (code == class_code) {
             while (fgets(mat_buffer, sizeof(mat_buffer), matieres) != NULL) {
-                int row = sscanf(mat_buffer, "%d %s", &file_ref, mat_name);
-                if (file_ref == ref) printf("\t|  %8s  |\n", mat_name);
+                int row = sscanf(mat_buffer, "%d %s %d", &file_ref, mat_name, &coeff);
+                if (file_ref == ref) printf("\t|  %9d  |  %8s  |  %11d  |\n", file_ref, mat_name, coeff);
             }
         }
     }
 
-    printf("\t+------------+\n");
+    printf("\t+-------------+------------+---------------+\n");
 
     fclose(associations);
     fclose(matieres);
