@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "relations.h"
-#include "gestion_matiere/matiere.h"
+#include "se_faire.h"
+#include "../gestion_matiere/matiere.h"
 
 void associer_matiere_classe(int class_code, int mat_reference, Classe classes[], int *size, Se_faire tab[], int *se_faire_size) {
     if (rechercher_association(class_code, mat_reference) == 1) {
@@ -56,7 +56,7 @@ void dissocier_matiere_classe(int target_classe, int target_matiere) {
     fclose(new_file);
 
     remove("gestion_classes/se_faire.csv");
-    rename("gestion_classes/temp.csv", new_name);
+    rename("gestion_classes/temp.csv", "gestion_classes/se_faire.csv");
 }
 
 void afficher_matieres_classe(int class_code) {
@@ -66,16 +66,20 @@ void afficher_matieres_classe(int class_code) {
     char mat_buffer[50], asso_buffer[50], mat_name[15];
     int code, file_ref, ref;
 
+    printf("\t+------------+\n");
+
     while (fgets(asso_buffer, sizeof(asso_buffer), associations) != NULL) {
         int line = sscanf(asso_buffer, "%d,%d", &code, &ref);
         rewind(matieres);
         if (code == class_code) {
             while (fgets(mat_buffer, sizeof(mat_buffer), matieres) != NULL) {
                 int row = sscanf(mat_buffer, "%d %s", &file_ref, mat_name);
-                if (file_ref == ref) printf("%s\n", mat_name);
+                if (file_ref == ref) printf("\t|  %8s  |\n", mat_name);
             }
         }
     }
+
+    printf("\t+------------+\n");
 
     fclose(associations);
     fclose(matieres);
