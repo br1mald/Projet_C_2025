@@ -29,7 +29,7 @@ int gestion_matiere()
                     printf("Donnez la reference de la matiere a rechercher : ");
                     scanf("%d", &reference);
                     if(rechercher_matiere(reference))
-                        printf(" Reference : %d \n Libelle : %s \n Coefficient : %d\n", matiere_ajouter.coefficient, matiere_ajouter.libelle, matiere_ajouter.reference);
+                        printf(" Reference : %d \n Libelle : %s \n Coefficient : %d\n", matiere_ajouter.reference, matiere_ajouter.libelle, matiere_ajouter.coefficient);
                     else
                         printf("L'element est absent dans la liste des matieres.\n");
                 break;
