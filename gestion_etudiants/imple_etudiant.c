@@ -83,6 +83,7 @@ int ajou_etudiant() {
     while (retour_code_existe == 0) {
         printf("Erreur: Le code %d ne correspond à aucune classes, ressaisir un code valide : ", etu.code);
         scanf("%d", &etu.code);
+        retour_code_existe = code_existe(etu.code);
     }
 
 
@@ -133,7 +134,8 @@ int code_existe(int x)
     return 0;
 }
 
-int modif_etudiant(){
+int modif_etudiant()
+{
      int numero, trouve = 0;
     printf("Entrez le numero de l'etudiant a modifier : ");
     scanf("%d", &numero);
@@ -152,7 +154,7 @@ int modif_etudiant(){
     }
 
     Etudiant etu;
-    char ligne[256];
+    char ligne[256], continuer[10] = "oui";
     int choice;
     while (fgets(ligne, sizeof(ligne), fichier)) {
         // le format est : prenom, nom, numero, jj/mm/aaaa, email, code
@@ -160,11 +162,13 @@ int modif_etudiant(){
                    etu.prenom, etu.nom, &etu.numero,
                    &etu.date_naissance.jour, &etu.date_naissance.mois, &etu.date_naissance.annee,
                    etu.email, &etu.code) == 8) {
-                if (etu.numero == numero) {
+            if (etu.numero == numero) {
                     trouve = 1;
-                    printf("Modification de l'etudiant %s %s\n", etu.prenom, etu.nom);
-                    printf("Veuillez saisir le champ à modifier:\n1. Prénom\n2. Nom\n3. Jour de naissance\n4. Mois de naissance\n5. Année de naissance\n6. Email\n7. Code\n");
-                    scanf("%d", &choice);
+                while(strcmp(continuer,"oui") == 0 || strcmp(continuer,"Oui") == 0 ){
+                        printf("Modification de l'etudiant %s %s\n", etu.prenom, etu.nom);
+                        printf("Veuillez saisir le champ à modifier:\n1. Prénom\n2. Nom\n3. Jour de naissance\n4. Mois de naissance\n5. Année de naissance\n6. Email\n7. Code\n");
+                        printf("Champ à modifier : ");
+                        scanf("%d", &choice);
                     switch (choice) {
                         case 1:
                             printf("Nouveau prenom : ");
@@ -195,11 +199,16 @@ int modif_etudiant(){
                             scanf("%d", &etu.code);
                             break;
                     }
-                }
-            fprintf(temp, "%s, %s, %d, %d/%d/%d, %s, %d\n",
+
+                    fprintf(temp, "%s, %s, %d, %d/%d/%d, %s, %d\n",
                     etu.prenom, etu.nom, etu.numero,
                     etu.date_naissance.jour, etu.date_naissance.mois, etu.date_naissance.annee,
                     etu.email, etu.code);
+
+                    printf("Voulez vous modifier un autre champ(oui/non) : ");
+                    scanf("%s", continuer);
+                }
+            }
         }
     }
 
@@ -218,7 +227,6 @@ int modif_etudiant(){
     }
 
 }
-
 
 int suppr_etudiant(){
     FILE *fichier = fopen("gestion_etudiants/file_etudiant.csv", "r");
