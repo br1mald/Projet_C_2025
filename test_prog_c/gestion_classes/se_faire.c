@@ -40,23 +40,33 @@ void initialize_se_faire(Se_faire tab[], int *se_faire_size) {
 
 void dissocier_matiere_classe(int target_classe, int target_matiere) {
     FILE *og_file = fopen("gestion_classes/se_faire.csv", "r");
-    FILE *new_file = fopen("gestion_classes/temp.csv", "w");
 
-    int classe_code, matiere_ref;
+    int classe_code, matiere_ref, found = 0;
     char buffer[50];
     const char *new_name = "gestion_classes/se_faire.csv";
 
     while (fgets(buffer, sizeof(buffer), og_file) != NULL) {
         int line = sscanf(buffer, "%d,%d", &classe_code, &matiere_ref);
-        if (classe_code != target_classe || matiere_ref != target_matiere) {
-            fprintf(new_file, "%d,%d\n", classe_code, matiere_ref);
-        }
+        if (classe_code == target_classe && matiere_ref == target_matiere) found = 1;
     }
-    fclose(og_file);
-    fclose(new_file);
 
-    remove("gestion_classes/se_faire.csv");
-    rename("gestion_classes/temp.csv", "gestion_classes/se_faire.csv");
+    if (found == 1) {
+        rewind(og_file);
+        FILE *new_file = fopen("gestion_classes/temp.csv", "w");
+        while (fgets(buffer, sizeof(buffer), og_file) != NULL) {
+            int line = sscanf(buffer, "%d,%d", &classe_code, &matiere_ref);
+            if (classe_code != target_classe || matiere_ref != target_matiere) {
+                fprintf(new_file, "%d,%d\n", classe_code, matiere_ref);
+            }
+        }
+        remove("gestion_classes/se_faire.csv");
+        rename("gestion_classes/temp.csv", "gestion_classes/se_faire.csv");
+        fclose(new_file);
+        printf("Opération réussie.\n");
+    } else printf("Cette classe et cette matière ne sont pas associées\n");
+
+    fclose(og_file);
+
 }
 
 void afficher_matieres_classe(int class_code) {
@@ -64,11 +74,11 @@ void afficher_matieres_classe(int class_code) {
     FILE *associations = fopen("gestion_classes/se_faire.csv", "r");
 
     char mat_buffer[50], asso_buffer[50], mat_name[15];
-    int code, file_ref, ref, coeff;
+    int code, file_ref, ref, coeff, counter = 0;
 
-    printf("\t+-------------+------------+---------------+\n");
-    printf("\t|  Référence  |   Matière  |  Coefficient  |\n");
-    printf("\t+-------------+------------+---------------+\n");
+    printf("+-------------+------------+---------------+\n");
+    printf("|  Référence  |   Matière  |  Coefficient  |\n");
+    printf("+-------------+------------+---------------+\n");
 
     while (fgets(asso_buffer, sizeof(asso_buffer), associations) != NULL) {
         int line = sscanf(asso_buffer, "%d,%d", &code, &ref);
@@ -76,12 +86,12 @@ void afficher_matieres_classe(int class_code) {
         if (code == class_code) {
             while (fgets(mat_buffer, sizeof(mat_buffer), matieres) != NULL) {
                 int row = sscanf(mat_buffer, "%d %s %d", &file_ref, mat_name, &coeff);
-                if (file_ref == ref) printf("\t|  %9d  |  %8s  |  %11d  |\n", file_ref, mat_name, coeff);
+                if (file_ref == ref) printf("|  %9d  |  %8s  |  %11d  |\n", file_ref, mat_name, coeff); counter +=1;
             }
         }
     }
-
-    printf("\t+-------------+------------+---------------+\n");
+    if (counter == 0) printf("|Aucune matière enseignée dans cette classe|\n");
+    printf("+-------------+------------+---------------+\n");
 
     fclose(associations);
     fclose(matieres);

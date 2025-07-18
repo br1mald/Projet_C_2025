@@ -70,23 +70,23 @@ int gestion_classes(){
                 break;
             case 4:
                 if (size > 0){
-                    printf("Affichage des classes\n");
+                    printf("=== Liste des classes ===\n");
 
-                    printf("\t+------+------------+-------------+\n");
-                    printf("\t| Code |     Nom    |   Niveau    |\n");
-                    printf("\t+------+------------+-------------+\n");
+                    printf("+------+------------+-------------+\n");
+                    printf("| Code |     Nom    |   Niveau    |\n");
+                    printf("+------+------------+-------------+\n");
 
                     FILE *reader = fopen("gestion_classes/classes.csv", "r");
                     char buffer[255];
                     for (int i = 0; i < size; i++){
                         fgets(buffer, 255, reader);
                         int line = sscanf(buffer, "%d,%[^,],%[^\n]", &buffer_code, buffer_nom, buffer_niveau);
-                        printf("\t| %4d | %10s | %11s |\n", buffer_code, buffer_nom, buffer_niveau);
+                        printf("| %4d | %10s | %11s |\n", buffer_code, buffer_nom, buffer_niveau);
                     }
 
-                    printf("\t+------+------------+-------------+\n");
+                    printf("+------+------------+-------------+\n");
 
-                } else printf("Aucune classe à afficher\n");
+                } else printf("Aucune classe à afficher.\n");
                 break;
             case 5:
                 if (size == 0) {
@@ -97,13 +97,16 @@ int gestion_classes(){
                 printf("Veuillez saisir le code de la classe dont vous souhaitez connaître les informations\n");
                 scanf("%d", &target);
                 pos = search(classes, target, size);
-                if (classes[pos].niveau == Licence) strcpy(level, "Licence");
-                else if (classes[pos].niveau == Master) strcpy(level, "Master");
-                printf("\t+----------+--------+----------+\n");
-                printf("\t|    Nom   |  Code  |  Niveau  |\n");
-                printf("\t+----------+--------+----------+\n");
-                printf("\t|  %7s |  %3d   | %7s  |\n", classes[pos].nom, classes[pos].code, level);
-                printf("\t+----------+--------+----------+\n");
+                if (pos != -1) {
+                    printf(" === Informations sur la classe de code %d ===\n", target);
+                    if (classes[pos].niveau == Licence) strcpy(level, "Licence");
+                    else if (classes[pos].niveau == Master) strcpy(level, "Master");
+                    printf("+----------+--------+----------+\n");
+                    printf("|    Nom   |  Code  |  Niveau  |\n");
+                    printf("+----------+--------+----------+\n");
+                    printf("|  %7s |  %3d   | %7s  |\n", classes[pos].nom, classes[pos].code, level);
+                    printf("+----------+--------+----------+\n");
+                } else printf("Classe inexistante.\n");
                 break;
             case 6:
                 printf("Menu d'association de classe-matière\n");
@@ -126,9 +129,9 @@ int gestion_classes(){
                 scanf("%d", &code);
                 pos = search(classes, code, size);
                 if (pos != -1) {
-                    printf("Liste des matières de la classe %s: \n", classes[pos].nom);
+                    printf("=== Liste des matières de la classe %s === \n", classes[pos].nom);
                     afficher_matieres_classe(code);
-                } else printf("Classe introuvable\n");
+                } else printf("Classe inexistance.\n");
                 break;
             case 9:
                 printf("Retour au menu principal\t");
@@ -149,28 +152,32 @@ int gestion_classes(){
 
 void add_class(Classe classes[], int *size, int max_capacity){
     int level = 0;
+    int code;
 
     if (*size >= max_capacity) printf("Nombre maximum de classes atteint.\n");
     else{
-        printf("Veuillez saisir le nom de la classe à ajouter (max 25 caractères)\n");
-        scanf("%s", classes[*size].nom);
-        printf("Veuillez saisir son code (max 10 caractères)\n");
-        scanf("%d", &classes[*size].code);
-        while (level != 1 && level != 2){
-            printf("Veuillez saisir le niveau de cette classe: 1 pour Licence ou 2 pour Master\n");
-            scanf("%d", &level);
-            switch (level){
-                case 1:
-                    classes[*size].niveau = Licence;
-                    break;
-                case 2:
-                    classes[*size].niveau = Master;
-                    break;
-                default:
-                    printf("Invalide.\n");
+        printf("Veuillez saisir le code de la classe à ajouter (max 10 caractères)\n");
+        scanf("%d", &code);
+        if (search(classes, code, *size) == -1) {
+            classes[*size].code = code;
+            printf("Veuillez saisir son nom (max 25 caractères)\n");
+            scanf("%s", classes[*size].nom);
+            while (level != 1 && level != 2){
+                printf("Veuillez saisir le niveau de cette classe: 1 pour Licence ou 2 pour Master\n");
+                scanf("%d", &level);
+                switch (level){
+                    case 1:
+                        classes[*size].niveau = Licence;
+                        break;
+                    case 2:
+                        classes[*size].niveau = Master;
+                        break;
+                    default:
+                        printf("Invalide.\n");
+                }
             }
-        }
-        (*size)++;
+            (*size)++;
+        } else printf("Cette classe existe déjà.\n");
     }
 }
 
@@ -182,7 +189,7 @@ void remove_class(Classe classes[], int *size){
         printf("Veuillez saisir le code de la classe à supprimer\n");
         scanf("%d", &target);
         pos = search(classes, target, *size);
-        if (pos == -1) printf("Classe introuvable\n");
+        if (pos == -1) printf("Classe inexistante.\n");
         else {
             printf("Classe %s supprimée.\n", classes[pos].nom);
             for (int i = pos; i < *size - 1; i++) classes[i] = classes[i + 1];
@@ -200,7 +207,7 @@ void modify_class(Classe classes[], int *size){
         printf("Veuillez saisir le code de la classe à modifier\n");
         scanf("%d", &target);
         pos = search(classes, target, *size);
-        if (pos == -1) printf("Classe introuvable\n");
+        if (pos == -1) printf("Classe inexistante.\n");
         else {
             while (strcmp(continuer, "non") != 0 && strcmp(continuer, "Non") != 0){
                 printf("Que souhaitez-vous modifier?\n1. Code\n2. Nom\n3. Niveau\n");

@@ -134,7 +134,7 @@ void ajouter_note_etudiant_matiere() {
             }
         }
     } while (!matiere_existe);
-     
+
     if (!matiere_associee_classe(note.reference, etudiant.code)) {
         printf("Erreur: Cette matiere n'est pas associee a la classe de l'etudiant!\n");
         return;
@@ -239,7 +239,7 @@ void afficher_note_classe_matiere() {
                             &note.noteCC, &note.noteDS) != EOF) {
                     if (note.numero == etudiant.numero && note.reference == reference) {
                         float moyenne = calculer_moyenne(note.noteCC, note.noteDS);
-                        printf("| %-4d | %-6s %-15s | %-8.2f | %-8.2f | %-10.2f |\n",
+                        printf("| %-4d | %-9s %-13s | %-8.2f | %-8.2f | %-10.2f |\n",
                                etudiant.numero, etudiant.prenom, etudiant.nom,
                                note.noteCC, note.noteDS, moyenne);
                         moyenne_classe += moyenne;
@@ -268,8 +268,8 @@ void afficher_note_classe_matiere() {
         printf("| Moyenne classe: %-36.2f              |\n", moyenne_classe / nb_etudiants);
         printf("+-------------------------------------------------------------------+\n");
     } else {
-        printf("| Aucune note trouvee pour cette classe et cette matiere      |\n");
-        printf("+-------------------------------------------------------------+\n");
+        printf("| Aucune note trouvee pour cette classe et cette matiere            |\n");
+        printf("+-------------------------------------------------------------------+\n");
     }
 }
 
@@ -550,12 +550,12 @@ void afficher_note_etudiant_toutes_matieres() {
 
     if (trouve) {
         if (nb_matieres > 0) {
-            printf("| Moyenne generale: %-40.2f             |\n", moyenne_generale / nb_matieres);
-            printf("+------------------------------------------------------------------------+\n");
+            printf("| Moyenne generale: %-40.2f              |\n", moyenne_generale / nb_matieres);
+            printf("+-------------------------------------------------------------------------+\n");
         }
     } else {
-        printf("| Aucune note trouvee pour cet etudiant                              |\n");
-        printf("+---------------------------------------------------------------------+\n");
+        printf("| Aucune note trouvee pour cet etudiant                                   |\n");
+        printf("+-------------------------------------------------------------------------+\n");
     }
 }
 
