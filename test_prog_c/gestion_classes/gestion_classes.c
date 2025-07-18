@@ -39,7 +39,6 @@ int gestion_classes(){
                     }
                     printf("Ajout de la classe numéro %d\n", i + 1);
                     add_class(classes, &size, 50);
-                    write_to_file(classes, &size);
                 }
                 break;
             case 2:
@@ -177,6 +176,7 @@ void add_class(Classe classes[], int *size, int max_capacity){
                 }
             }
             (*size)++;
+            write_to_file(classes, &(*size));
         } else printf("Cette classe existe déjà.\n");
     }
 }
